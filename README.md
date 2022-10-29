@@ -1,1 +1,1 @@
-# the_temple_of_light
+# The Temple of Light
