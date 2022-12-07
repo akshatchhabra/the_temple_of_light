@@ -70,7 +70,7 @@ public class Angle
 
     public static int Distance(Angle angle1, Angle angle2)
     {
-        return Math.Abs(angle1.angle - angle2.angle);
+        return (angle1 - angle2).angle;
     }
 
     public void SetAngle(int angle)
