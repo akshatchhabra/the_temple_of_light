@@ -19,7 +19,7 @@ public class Column : MonoBehaviour
 {
     // Public variables: Determine column type, angle, color
     public ColType type;              // column type, an enum from 1-6 for player cols, 7-8 for game design cols
-    public int facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
+    public Angle facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
     public int[] position;            // Can be set when placing down a column to calculate in world coords
 
     public bool movable;
