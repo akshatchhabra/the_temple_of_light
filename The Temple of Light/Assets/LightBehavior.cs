@@ -279,6 +279,7 @@ public class LightBehavior : MonoBehaviour
         {
             child.GetComponent<LightBehavior>().Kill();
         }
+        children = new new List<GameObject>();
     }
 
     public void Kill()
