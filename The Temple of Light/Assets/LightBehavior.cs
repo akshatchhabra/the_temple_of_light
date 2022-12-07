@@ -75,7 +75,7 @@ public class Angle
 
     public void SetAngle(int angle)
     {
-        this.angle = Mod(angle, 8);
+        this.angle = new Angle(angle).angle;
     }
 
     public double ToDegrees()
@@ -102,40 +102,29 @@ public class LightBehavior : MonoBehaviour
     {
         unit = GetUnitVector(direction);
         endpoint = origin + unit * maxLength;
-        obstr = source;
+        obstr = null;
         children = new List<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f);
+        LayerMask layers =~ LayerMask.GetMask("TransparentFX");
+        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f, layers);
         if (colliders.Length >= 1)
         {
             GameObject prevObstr = obstr;
-            Debug.Log(prevObstr.name);
             for (int i = 0; i < colliders.Length; i++)
             {
                 GameObject currObj = colliders[i].gameObject;
-                Debug.Log("Current: " + currObj.name);
-                Debug.Log(currObj.name == source.name);
-                // GameObject parent = currObj.GetComponent<GameObject>();
-                // if (currObj.transform.parent != null)
-                // {
-                //   parent = currObj.transform.parent.GetComponent<GameObject>();
-                //&& parent.name != source.name
-                // }
-                if (currObj.name != source.name && currObj.name != "light" && Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
+                if (GameObject.ReferenceEquals(obstr, null) || Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
                 {
-                    Debug.Log("New Obstruction: " + currObj.name);
                     obstr = currObj;
                 }
             }
-            Debug.Log("Reference: " + obstr.name + ", " + prevObstr.name + ", " + GameObject.ReferenceEquals(obstr,prevObstr));
-            if (!GameObject.ReferenceEquals(obstr, prevObstr))
+            if (!GameObject.Equals(obstr, prevObstr))
             {
                 transform.position = 0.5f * (origin + obstr.transform.position);
-                //Debug.Log(transform.position);
                 transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position), 1);
                 KillChildren();
             }
@@ -144,8 +133,7 @@ public class LightBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-      //Debug.Log("Collision");
-        if (other.transform == this.transform.parent)
+        if (GameObject.Equals(other.gameObject, source))
         {
             return;
         }
@@ -226,6 +214,7 @@ public class LightBehavior : MonoBehaviour
         childBehavior.origin = column.transform.position;
         childBehavior.direction = angle;
         childBehavior.source = column;
+        childLight.SetActive(true);
         children.Add(childLight);
         return childLight;
     }

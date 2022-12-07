@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 357730717249446635}
   - component: {fileID: 2565871273162767723}
   - component: {fileID: 4677384887494249345}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4675618486656113198
 Transform:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517368579759157249}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
@@ -114,5 +114,4 @@ MonoBehaviour:
   lightObject: {fileID: 1517368579759157249}
   maxLength: 60
   origin: {x: 0, y: 0, z: 0}
-  direction: 0
   source: {fileID: 0}
