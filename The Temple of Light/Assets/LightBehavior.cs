@@ -98,6 +98,7 @@ public class LightBehavior : MonoBehaviour
     private List<LightBehavior> children;
     private Vector3 origin;
     private Vector3 lightEnd;
+    private Color lightColor;
 
     // Start is called before the first frame update
     void Start()
@@ -107,6 +108,7 @@ public class LightBehavior : MonoBehaviour
         endpoint = origin + unit * maxLength;
         obstr = null;
         children = new List<LightBehavior>();
+        lightColor = GetComponent<Renderer>().material.GetColor("_Color");
     }
 
     // Update is called once per frame
@@ -218,9 +220,12 @@ public class LightBehavior : MonoBehaviour
         }
     }
 
-    private GameObject CreateLight(GameObject column, Angle angle)
+    private GameObject CreateColorLight(GameObject column, Color color, Angle angle)
     {
         GameObject childLight = Instantiate(lightObject);
+        Material childMaterial = childLight.GetComponent<Renderer>().material;
+        childMaterial.SetColor("_Color", color);
+        childMaterial.SetColor("_EmissionColor", color);
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
         childBehavior.direction = angle;
         childBehavior.source = column;
@@ -230,12 +235,9 @@ public class LightBehavior : MonoBehaviour
         return childLight;
     }
 
-    private GameObject CreateColorLight(GameObject column, Color color, Angle angle)
+    private GameObject CreateLight(GameObject column, Angle angle)
     {
-        GameObject childLight = CreateLight(column, angle);
-        Material childMaterial = childLight.GetComponent<Renderer>().material;
-        childMaterial.SetColor("_Color", color);
-        childMaterial.SetColor("_EmissionColor", color);
+        GameObject childLight = CreateColorLight(column, lightColor, angle);
         return childLight;
     }
 
