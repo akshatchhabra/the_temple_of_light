@@ -32,8 +32,10 @@ public class Column : MonoBehaviour
     public ColType type;              // column type, an enum from 1-6 for player cols, 7-8 for game design cols
     public int facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
     public int[] position;            // Can be set when placing down a column to calculate in world coords
+    public bool movable;
     public Color color;              // color of the filter or required color of the receiver
                                         // "white" if the column is not colored
+    public GameObject player_reference;
 
     internal bool is_lit;             // whether or not the column is receiving a light beam
     internal int lit_angle;           // logical angle the light is coming from (0-7), -1 if not lit
@@ -45,6 +47,7 @@ public class Column : MonoBehaviour
     internal Color through_color;     // color of light passing through, "NONE" if not lit or wrong color in
         // Remaining light handling can be done in the actual light class (or all of it, if you want)
 
+    private bool being_carried;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +58,18 @@ public class Column : MonoBehaviour
       blocking = false;
       lit_color = Color.NONE;
       out_color = Color.NONE;
+      if((int)type < 7) {
+        movable = true;
+      }
+      being_carried = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+      if(being_carried) {
+        transform.position = player_reference.transform.position + new Vector3(0f,2f,0f);
+      }
 
     }
 
@@ -126,9 +136,28 @@ public class Column : MonoBehaviour
       //   I'll set up basic columns for both of them soon.
     }
 
-    // NOTE: Light handling for Concave/Convex/Prism columns needs to be done in the Light class
-    //  as those columns will create multiple different light beams
-    //  and I don't know how Albert wants to implement those. 
+    // I'll be impressed if this works first try but hey, I can't test it
+    public bool pickUp() {
+      if(!movable)
+        return false;
+
+      transform.scale = new Vector3(.125f, .125f, .125f);
+      // Values subject to change, working blind here
+      transform.position = player_reference.transform.position + new Vector3(0f,2f,0f);
+      being_carried = true;
+      return true;
+    }
+
+    public bool putDown(int xcoord, int ycoord) {
+      if(!movable) {
+        Debug.LogError("Immovable columns should not be able to be put down.");
+        return false;
+      }
+      transform.scale = new Vector3(.25f, .25f, .25f);
+      transform.position = new Vector3(xcoord, 0, ycoord);
+      being_carried = false;
+      return true;
+    }
 
 
 
