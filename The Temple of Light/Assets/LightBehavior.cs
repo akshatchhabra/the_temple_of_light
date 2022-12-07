@@ -88,7 +88,6 @@ public class LightBehavior : MonoBehaviour
 {
     public GameObject lightObject;
     public float maxLength = 60f;
-    public Vector3 origin;
     public Angle direction = new Angle(3);
     public GameObject source;
 
@@ -96,11 +95,13 @@ public class LightBehavior : MonoBehaviour
     private Vector3 endpoint;
     private GameObject obstr;
     private List<GameObject> children;
+    private Vector3 origin;
 
     // Start is called before the first frame update
     void Start()
     {
         unit = GetUnitVector(direction);
+        origin = source.transform.position;
         endpoint = origin + unit * maxLength;
         obstr = null;
         children = new List<GameObject>();
@@ -211,7 +212,6 @@ public class LightBehavior : MonoBehaviour
     {
         GameObject childLight = Instantiate(lightObject);
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
-        childBehavior.origin = column.transform.position;
         childBehavior.direction = angle;
         childBehavior.source = column;
         childLight.SetActive(true);
