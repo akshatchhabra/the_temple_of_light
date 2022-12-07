@@ -11,8 +11,6 @@ public class Player : MonoBehaviour
 
     public Vector3 movement_direction;
     public float velocity;
-    public Vector3 lrot;
-    public Vector3 rrot;
     public float rotation_speed;
     public float turn_smooth_time;
 
@@ -23,8 +21,6 @@ public class Player : MonoBehaviour
         character_controller = GetComponent<CharacterController>();
         movement_direction = new Vector3(0.0f, 0.0f, 0.0f);
         velocity = 3.0f;
-        lrot = new Vector3(0.0f, -1.0f, 0.0f);
-        rrot = new Vector3(0.0f, 1.0f, 0.0f);
         rotation_speed = 50.0f;
         turn_smooth_time = 0.1f;
     }
@@ -40,7 +36,7 @@ public class Player : MonoBehaviour
                             || Input.GetKey("a") || Input.GetKey("left")
                             || Input.GetKey("s") || Input.GetKey("down") 
                             || Input.GetKey("d") || Input.GetKey("right") ;
-        animation_controller.SetBool("is_walking_forward", is_walking);
+        animation_controller.SetBool("is_walking", is_walking);
         float target_angle = Mathf.Atan2(movement_direction.x, movement_direction.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, target_angle, ref turn_smooth_velocity, turn_smooth_time);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
