@@ -100,8 +100,10 @@ public class LightBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        origin = this.transform.position;
         unit = GetUnitVector(direction);
         endpoint = origin + unit * maxLength;
+        Debug.Log(endpoint);
         obstr = null;
         children = new List<GameObject>();
     }
@@ -109,36 +111,45 @@ public class LightBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LayerMask layers =~ LayerMask.GetMask("TransparentFX");
-        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f, layers);
+        //LayerMask layers =~ LayerMask.GetMask("TransparentFX");
+        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f/*, layers*/);
         if (colliders.Length >= 1)
         {
+          Debug.Log("Collision hit");
             GameObject prevObstr = obstr;
             for (int i = 0; i < colliders.Length; i++)
             {
                 GameObject currObj = colliders[i].gameObject;
-                if (GameObject.ReferenceEquals(obstr, null) || Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
+                if (GameObject.ReferenceEquals(obstr, null) || (Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position)))
                 {
+                  if(currObj.name != "light") 
+                  {
+                    Debug.Log("Current Object Changed to:" + currObj.name);
                     obstr = currObj;
+                  }
                 }
             }
             if (!GameObject.Equals(obstr, prevObstr))
             {
-                transform.position = 0.5f * (origin + obstr.transform.position);
-                transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position), 1);
+                Vector3 obstr_pos = new Vector3(obstr.transform.position.x, 3.5f, obstr.transform.position.z);
+                transform.position = 0.5f * (origin + obstr_pos);
+                //Debug.Log(transform.position);
+                transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position)/2f, 1);
                 KillChildren();
+                Debug.Log(this.transform.localScale.y);
             }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (GameObject.Equals(other.gameObject, source))
+        if (GameObject.Equals(other.gameObject, source) || other.gameObject.name == "light")
         {
             return;
         }
         if (other.tag == "Column")
         {
+            Debug.Log("Hit a column!");
             GameObject column = other.gameObject;
 
             Angle lightAngle = new Angle((int)(transform.rotation.eulerAngles.y % 360 / 45));
