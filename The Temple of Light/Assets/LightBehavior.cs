@@ -109,7 +109,7 @@ public class LightBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LayerMask layers =~ LayerMask.GetMask("TransparentFX");
+        LayerMask layers =~ LayerMask.GetMask("Light");
         Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f, layers);
         if (colliders.Length >= 1)
         {
@@ -279,7 +279,7 @@ public class LightBehavior : MonoBehaviour
         {
             child.GetComponent<LightBehavior>().Kill();
         }
-        children = new new List<GameObject>();
+        children = new List<GameObject>();
     }
 
     public void Kill()
