@@ -97,6 +97,7 @@ public class LightBehavior : MonoBehaviour
     private GameObject obstr;
     private List<LightBehavior> children;
     private Vector3 origin;
+    private Vector3 lightEnd;
 
     // Start is called before the first frame update
     void Start()
@@ -124,10 +125,18 @@ public class LightBehavior : MonoBehaviour
                     obstr = currObj;
                 }
             }
+            if (!GameObject.ReferenceEquals(obstr, null))
+            {
+                lightEnd = obstr.transform.position;
+            }
+            else
+            {
+                lightEnd = endpoint;
+            }
             if (!GameObject.Equals(obstr, prevObstr))
             {
-                transform.position = 0.5f * (origin + obstr.transform.position);
-                transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position), 1);
+                transform.position = 0.5f * (origin + lightEnd);
+                transform.localScale = new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
                 KillChildren();
             }
         }
