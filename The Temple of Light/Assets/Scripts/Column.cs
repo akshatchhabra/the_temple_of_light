@@ -15,37 +15,24 @@ public enum ColType {
 
 }
 
-public enum Color { // where any light color is the sum of its parts
-  NONE = 0,
-  RED = 1,        // basic colors are powers of 2, others are sums of them
-  GREEN = 2,      // and white is the sum of all three
-  YELLOW = 3,     // This can be moved to whichever classes handle light if it's easier
-  BLUE = 4,
-  MAGENTA = 5,
-  CYAN = 6,
-  WHITE = 7,
-}
-
 public class Column : MonoBehaviour
 {
     // Public variables: Determine column type, angle, color
     public ColType type;              // column type, an enum from 1-6 for player cols, 7-8 for game design cols
     public int facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
     public int[] position;            // Can be set when placing down a column to calculate in world coords
+
     public bool movable;
     public Color color;              // color of the filter or required color of the receiver
                                         // "white" if the column is not colored
     public GameObject player_reference;
+
 
     internal bool is_lit;             // whether or not the column is receiving a light beam
     internal int lit_angle;           // logical angle the light is coming from (0-7), -1 if not lit
     internal int out_angle;           // if mirrored, the angle incoming light gets reflected
     internal int through_angle;       // if clear & not lens, angle of nonreflected light
     internal bool blocking;           // Is it blocking the light? (wrong incoming angle, etc)
-    internal Color lit_color;         // color of incoming light. "NONE" if not lit.
-    internal Color out_color;         // color of outgoing reflected light, "NONE" if not lit.
-    internal Color through_color;     // color of light passing through, "NONE" if not lit or wrong color in
-        // Remaining light handling can be done in the actual light class (or all of it, if you want)
 
     private bool being_carried;
 
@@ -56,12 +43,14 @@ public class Column : MonoBehaviour
       lit_angle = -1;
       out_angle = -1;
       blocking = false;
+
       lit_color = Color.NONE;
       out_color = Color.NONE;
       if((int)type < 7) {
         movable = true;
       }
       being_carried = false;
+
     }
 
     // Update is called once per frame
