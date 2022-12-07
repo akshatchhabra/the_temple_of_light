@@ -88,8 +88,8 @@ public class LightBehavior : MonoBehaviour
 {
     public GameObject lightObject;
     public float maxLength = 60f;
-    public Vector3 origin = Vector3.zero;
-    public Angle direction = new Angle(0);
+    public Vector3 origin;
+    public Angle direction = new Angle(3);
     public GameObject source;
 
     private Vector3 unit;
@@ -113,17 +113,29 @@ public class LightBehavior : MonoBehaviour
         if (colliders.Length >= 1)
         {
             GameObject prevObstr = obstr;
+            Debug.Log(prevObstr.name);
             for (int i = 0; i < colliders.Length; i++)
             {
                 GameObject currObj = colliders[i].gameObject;
-                if (currObj != source && Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
+                Debug.Log("Current: " + currObj.name);
+                Debug.Log(currObj.name == source.name);
+                // GameObject parent = currObj.GetComponent<GameObject>();
+                // if (currObj.transform.parent != null)
+                // {
+                //   parent = currObj.transform.parent.GetComponent<GameObject>();
+                //&& parent.name != source.name
+                // }
+                if (currObj.name != source.name && currObj.name != "light" && Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
                 {
+                    Debug.Log("New Obstruction: " + currObj.name);
                     obstr = currObj;
                 }
             }
-            if (GameObject.ReferenceEquals(obstr, prevObstr))
+            Debug.Log("Reference: " + obstr.name + ", " + prevObstr.name + ", " + GameObject.ReferenceEquals(obstr,prevObstr));
+            if (!GameObject.ReferenceEquals(obstr, prevObstr))
             {
                 transform.position = 0.5f * (origin + obstr.transform.position);
+                //Debug.Log(transform.position);
                 transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position), 1);
                 KillChildren();
             }
@@ -132,6 +144,7 @@ public class LightBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+      //Debug.Log("Collision");
         if (other.transform == this.transform.parent)
         {
             return;
