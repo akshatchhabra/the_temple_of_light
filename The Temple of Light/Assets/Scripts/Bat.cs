@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Bat : MonoBehaviour
 {
+
+    private Animator animation_controller;
+    private CharacterController character_controller;
+
     // Start is called before the first frame update
     void Start()
     {
