@@ -90,11 +90,12 @@ public class LightBehavior : MonoBehaviour
     public float maxLength = 60f;
     public Angle direction = new Angle(3);
     public GameObject source;
+    public LightBehavior parent = null;
 
     private Vector3 unit;
     private Vector3 endpoint;
     private GameObject obstr;
-    private List<GameObject> children;
+    private List<LightBehavior> children;
     private Vector3 origin;
 
     // Start is called before the first frame update
@@ -104,7 +105,7 @@ public class LightBehavior : MonoBehaviour
         origin = source.transform.position;
         endpoint = origin + unit * maxLength;
         obstr = null;
-        children = new List<GameObject>();
+        children = new List<LightBehavior>();
     }
 
     // Update is called once per frame
@@ -214,8 +215,9 @@ public class LightBehavior : MonoBehaviour
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
         childBehavior.direction = angle;
         childBehavior.source = column;
+        childBehavior.parent = this;
         childLight.SetActive(true);
-        children.Add(childLight);
+        children.Add(childBehavior);
         return childLight;
     }
 
@@ -275,16 +277,25 @@ public class LightBehavior : MonoBehaviour
 
     private void KillChildren()
     {
-        foreach (GameObject child in children)
+        foreach (LightBehavior child in children)
         {
-            child.GetComponent<LightBehavior>().Kill();
+            child.Kill();
         }
-        children = new List<GameObject>();
+        children = new List<LightBehavior>();
     }
 
     public void Kill()
     {
         KillChildren();
+        if (!GameObject.ReferenceEquals(parent, null))
+        {
+            parent.RemoveChild(this);
+        }
         Destroy(this);
+    }
+
+    public void RemoveChild(LightBehavior child)
+    {
+        children.Remove(child);
     }
 }
