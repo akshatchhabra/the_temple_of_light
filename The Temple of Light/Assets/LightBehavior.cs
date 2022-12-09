@@ -91,6 +91,7 @@ public class LightBehavior : MonoBehaviour
     public Angle direction = new Angle(3);
     public GameObject source;
     public LightBehavior parent = null;
+    public int luminosity = 10;
 
     private Vector3 unit;
     private Vector3 endpoint;
@@ -222,6 +223,10 @@ public class LightBehavior : MonoBehaviour
 
     private GameObject CreateColorLight(GameObject column, Color color, Angle angle)
     {
+        if (luminosity <= 0)
+        {
+            return null;
+        }
         GameObject childLight = Instantiate(lightObject);
         Material childMaterial = childLight.GetComponent<Renderer>().material;
         childMaterial.SetColor("_Color", color);
@@ -230,6 +235,7 @@ public class LightBehavior : MonoBehaviour
         childBehavior.direction = angle;
         childBehavior.source = column;
         childBehavior.parent = this;
+        childBehavior.luminosity = luminosity - 1;
         childLight.SetActive(true);
         children.Add(childBehavior);
         return childLight;
