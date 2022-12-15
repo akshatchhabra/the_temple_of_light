@@ -172,6 +172,14 @@ public class Column : MonoBehaviour
       return true;
     }
 
+    public bool RotateCol(int dir = 1) {
+      if(!movable) {
+        return false;
+      }
+      facing_angle = facing_angle + dir;
+      transform.rotation = Quaternion.Euler(0f, (float)facing_angle.ToDegrees() - 90f, 0f);
+      return true;
+    }
 
 
 }
