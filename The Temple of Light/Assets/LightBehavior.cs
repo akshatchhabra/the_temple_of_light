@@ -174,21 +174,22 @@ public class LightBehavior : MonoBehaviour
                 case ColType.CONCAVE:
                     if (Angle.Distance(lightAngle, colAngle) <= 1)
                     {
-                        CreateLight(column, colAngle);
-                    }
-                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
-                    {
-                        CreateLight(column, -colAngle);
-                    }
-                    break;
-                case ColType.CONVEX:
-                    if (Angle.Distance(lightAngle, colAngle) <= 1)
-                    {
                         CreateSplitLight(column, colAngle);
                     }
                     else if (Angle.Distance(lightAngle, colAngle) >= 3)
                     {
                         CreateSplitLight(column, -colAngle);
+                    }
+                    break;
+                    
+                case ColType.CONVEX:
+                    if (Angle.Distance(lightAngle, colAngle) <= 1)
+                    {
+                        CreateLight(column, colAngle);
+                    }
+                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
+                    {
+                        CreateLight(column, -colAngle);
                     }
                     break;
                 case ColType.ONEWAY:

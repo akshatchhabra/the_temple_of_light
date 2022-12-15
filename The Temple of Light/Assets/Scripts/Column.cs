@@ -37,6 +37,7 @@ public class Column : MonoBehaviour
     public LightColor color;              // color of the filter or required color of the receiver
                                         // "white" if the column is not colored
     public GameObject player_reference;
+    public GameObject lightObject;
 
     internal bool is_lit;             // whether or not the column is receiving a light beam
     internal int lit_angle;           // logical angle the light is coming from (0-7), -1 if not lit
@@ -73,6 +74,16 @@ public class Column : MonoBehaviour
         transform.position = player_reference.transform.position + new Vector3(0f,2f,0f);
       }
 
+    }
+
+    private GameObject CreateLight()
+    {
+        GameObject childLight = Instantiate(lightObject);
+        LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
+        childBehavior.direction = facing_angle;
+        childBehavior.source = gameObject;
+        childLight.SetActive(true);
+        return childLight;
     }
 
     /* Getters and Setters **/
