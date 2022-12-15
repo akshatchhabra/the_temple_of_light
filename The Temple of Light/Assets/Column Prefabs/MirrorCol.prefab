@@ -367,9 +367,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  facing_angle: 0
   position: 
+  movable: 1
   color: 0
+  player_reference: {fileID: 0}
 --- !u!65 &5951634019953441634
 BoxCollider:
   m_ObjectHideFlags: 0

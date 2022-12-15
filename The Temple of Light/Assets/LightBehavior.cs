@@ -3,45 +3,151 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public class Angle
+{
+
+    public int angle;
+
+    private int Mod(int x, int y)
+    {
+        int mod = x % y;
+        return mod < 0 ? mod + y : mod;
+    }
+
+    public Angle(int angle)
+    {
+        this.angle = Mod(angle, 8);
+    }
+
+    public static Angle operator -(Angle angle)
+    {
+        return new Angle(-angle.angle);
+    }
+
+    public static Angle operator +(Angle angle, int change)
+    {
+        return new Angle(angle.angle + change);
+    }
+
+    public static Angle operator +(Angle angle1, Angle angle2)
+    {
+        return angle1 + angle2.angle;
+    }
+
+    public static Angle operator -(Angle angle, int change)
+    {
+        return new Angle(angle.angle - change);
+    }
+
+    public static Angle operator -(Angle angle1, Angle angle2)
+    {
+        return angle1 - angle2.angle;
+    }
+
+    public static bool operator ==(Angle angle1, Angle angle2)
+    {
+        return angle1.angle == angle2.angle;
+    }
+
+    public static bool operator !=(Angle angle1, Angle angle2)
+    {
+        return !(angle1 == angle2);
+    }
+
+    public override bool Equals(object other)
+    {
+        if (!(other is Angle))
+        {
+            return false;
+        }
+        return other as Angle == this;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
+
+    public static int Distance(Angle angle1, Angle angle2)
+    {
+        return (angle1 - angle2).angle;
+    }
+
+    public void SetAngle(int angle)
+    {
+        this.angle = new Angle(angle).angle;
+    }
+
+    public double ToDegrees()
+    {
+        return this.angle * 45D;
+    }
+}
+
 public class LightBehavior : MonoBehaviour
 {
     public GameObject lightObject;
     public float maxLength = 60f;
-    public Vector3 origin = Vector3.zero;
-    public int direction = 0;
+    public Angle direction = new Angle(3);
     public GameObject source;
+    public LightBehavior parent = null;
+    public int luminosity = 10;
+
+    private Vector3 unit;
+    private Vector3 endpoint;
+    private GameObject obstr;
+    private List<LightBehavior> children;
+    private Vector3 origin;
+    private Vector3 lightEnd;
+    private Color lightColor;
 
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 unit = GetUnitVector(direction);
-        Vector3 endpoint = origin + unit * maxLength;
-        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f);
-        if (colliders.Length >= 1)
-        {
-            GameObject obstr = colliders[0].gameObject;
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                GameObject currObj = colliders[i].gameObject;
-                if (currObj != source && Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
-                {
-                    obstr = currObj;
-                }
-            }
-            transform.position = 0.5f * (origin + obstr.transform.position);
-            transform.localScale = new Vector3(1, Vector3.Distance(origin, obstr.transform.position), 1);
-        }
+        unit = GetUnitVector(direction);
+        origin = source.transform.position;
+        endpoint = origin + unit * maxLength;
+        obstr = null;
+        children = new List<LightBehavior>();
+        lightColor = GetComponent<Renderer>().material.GetColor("_Color");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        LayerMask layers =~ LayerMask.GetMask("Light");
+        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f, layers);
+        if (colliders.Length >= 1)
+        {
+            GameObject prevObstr = obstr;
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                GameObject currObj = colliders[i].gameObject;
+                if (GameObject.ReferenceEquals(obstr, null) || Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
+                {
+                    obstr = currObj;
+                }
+            }
+            if (!GameObject.ReferenceEquals(obstr, null))
+            {
+                lightEnd = obstr.transform.position;
+            }
+            else
+            {
+                lightEnd = endpoint;
+            }
+            if (!GameObject.Equals(obstr, prevObstr))
+            {
+                transform.position = 0.5f * (origin + lightEnd);
+                transform.localScale = new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
+                KillChildren();
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform == this.transform.parent)
+        if (GameObject.Equals(other.gameObject, source))
         {
             return;
         }
@@ -49,32 +155,41 @@ public class LightBehavior : MonoBehaviour
         {
             GameObject column = other.gameObject;
 
-            int lightAngle = (int)(transform.rotation.eulerAngles.y % 360 / 45);
-            int colAngle = column.GetComponent<Column>().facing_angle;
+            Angle lightAngle = new Angle((int)(transform.rotation.eulerAngles.y % 360 / 45));
+            Angle colAngle = column.GetComponent<Column>().facing_angle;
 
             ColType type = column.GetComponent<Column>().type;
             switch (type)
             {
                 case ColType.MIRROR:
-                    if (lightAngle == (colAngle + 1) % 8 || lightAngle == (colAngle - 1) % 8)
+                    if (Angle.Distance(lightAngle, colAngle) == 1)
                     {
-                        CreateLight(column, (lightAngle + 2) % 8);
+                        CreateLight(column, lightAngle + 2);
                     }
-                    else if (lightAngle == (colAngle + 3) % 8 || lightAngle == (colAngle - 3) % 8)
+                    else if (Angle.Distance(lightAngle, colAngle) == 3)
                     {
-                        CreateLight(column, (lightAngle - 2) % 8);
+                        CreateLight(column, lightAngle - 2);
                     }
                     break;
                 case ColType.CONCAVE:
-                    if (NotSide(colAngle, lightAngle))
+                    if (Angle.Distance(lightAngle, colAngle) <= 1)
+                    {
+                        CreateSplitLight(column, colAngle);
+                    }
+                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
+                    {
+                        CreateSplitLight(column, -colAngle);
+                    }
+                    break;
+                    
+                case ColType.CONVEX:
+                    if (Angle.Distance(lightAngle, colAngle) <= 1)
                     {
                         CreateLight(column, colAngle);
                     }
-                    break;
-                case ColType.CONVEX:
-                    if (NotSide(colAngle, lightAngle))
+                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
                     {
-                        CreateSplitLight(column, colAngle);
+                        CreateLight(column, -colAngle);
                     }
                     break;
                 case ColType.ONEWAY:
@@ -107,32 +222,39 @@ public class LightBehavior : MonoBehaviour
         }
     }
 
-    private GameObject CreateLight(GameObject column, int angle)
+    private GameObject CreateColorLight(GameObject column, Color color, Angle angle)
     {
+        if (luminosity <= 0)
+        {
+            return null;
+        }
         GameObject childLight = Instantiate(lightObject);
-        LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
-        childBehavior.origin = column.transform.position;
-        childBehavior.direction = angle;
-        childBehavior.source = column;
-        return childLight;
-    }
-
-    private GameObject CreateColorLight(GameObject column, Color color, int angle)
-    {
-        GameObject childLight = CreateLight(column, angle);
         Material childMaterial = childLight.GetComponent<Renderer>().material;
         childMaterial.SetColor("_Color", color);
         childMaterial.SetColor("_EmissionColor", color);
+        LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
+        childBehavior.direction = angle;
+        childBehavior.source = column;
+        childBehavior.parent = this;
+        childBehavior.luminosity = luminosity - 1;
+        childLight.SetActive(true);
+        children.Add(childBehavior);
         return childLight;
     }
 
-    private GameObject[] CreatePrismLight(GameObject column, int angle)
+    private GameObject CreateLight(GameObject column, Angle angle)
+    {
+        GameObject childLight = CreateColorLight(column, lightColor, angle);
+        return childLight;
+    }
+
+    private GameObject[] CreatePrismLight(GameObject column, Angle angle)
     {
         GameObject[] output = new GameObject[3];
         Color color = GetComponent<Renderer>().material.GetColor("_Color");
         if (color.r == 1)
         {
-            output[0] = CreateColorLight(column, Color.red, (angle - 1) % 8);
+            output[0] = CreateColorLight(column, Color.red, angle - 1);
         }
         if (color.g == 1)
         {
@@ -140,24 +262,24 @@ public class LightBehavior : MonoBehaviour
         }
         if (color.b == 1)
         {
-            output[2] = CreateColorLight(column, Color.blue, (angle + 1) % 8);
+            output[2] = CreateColorLight(column, Color.blue, angle + 1);
         }
         return output;
     }
 
-    private GameObject[] CreateSplitLight(GameObject column, int angle)
+    private GameObject[] CreateSplitLight(GameObject column, Angle angle)
     {
         GameObject[] output = new GameObject[3];
         for (int i = 0; i < 3; i++)
         {
-            output[i] = CreateLight(column, (angle - 1 + i) % 8);
+            output[i] = CreateLight(column, angle - 1 + i);
         }
         return output;
     }
 
-    private bool NotSide(int colAngle, int lightAngle)
+    private bool NotSide(Angle colAngle, Angle lightAngle)
     {
-        return lightAngle != (colAngle + 2) % 8 && lightAngle != (colAngle - 2) % 8;
+        return Angle.Distance(lightAngle, colAngle) != 2;
     }
 
     private bool HasColor(Color color)
@@ -166,8 +288,32 @@ public class LightBehavior : MonoBehaviour
         return lightColor.r >= color.r && lightColor.g >= color.g && lightColor.b >= color.b;
     }
 
-    private Vector3 GetUnitVector(int angle)
+    private Vector3 GetUnitVector(Angle angle)
     {
-        return new Vector3 ((float)Math.Cos(angle * 45D), 0, (float)Math.Sin(angle * 45D));
+        return new Vector3 ((float)Math.Cos(angle.ToDegrees()), 0, (float)Math.Sin(angle.ToDegrees()));
+    }
+
+    private void KillChildren()
+    {
+        foreach (LightBehavior child in children)
+        {
+            child.Kill();
+        }
+        children = new List<LightBehavior>();
+    }
+
+    public void Kill()
+    {
+        KillChildren();
+        if (!GameObject.ReferenceEquals(parent, null))
+        {
+            parent.RemoveChild(this);
+        }
+        Destroy(this);
+    }
+
+    public void RemoveChild(LightBehavior child)
+    {
+        children.Remove(child);
     }
 }
