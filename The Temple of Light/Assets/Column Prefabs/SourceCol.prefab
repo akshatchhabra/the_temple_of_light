@@ -460,6 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 7
+  facing: 0
   position: 
   movable: 0
   color: 7
@@ -549,6 +550,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: light
       objectReference: {fileID: 0}
+    - target: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565871273162767723, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+      propertyPath: m_Center.y
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565871273162767723, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+      propertyPath: m_Center.z
+      value: -2
+      objectReference: {fileID: 0}
     - target: {fileID: 4675618486656113198, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -605,6 +618,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 4677384887494249345, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677384887494249345, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 6190627659251518686}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
 --- !u!4 &6142589441582226367 stripped
