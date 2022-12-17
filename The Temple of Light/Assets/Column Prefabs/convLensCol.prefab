@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -176,6 +180,10 @@ PrefabInstance:
     - target: {fileID: 1000013104957752, guid: 413723dc9de2db24e8aa2da0f3995771, type: 3}
       propertyPath: m_Name
       value: convLensCol
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013104957752, guid: 413723dc9de2db24e8aa2da0f3995771, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000011951706466, guid: 413723dc9de2db24e8aa2da0f3995771, type: 3}
       propertyPath: m_RootOrder
@@ -266,6 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+  facing: 0
   position: 
   movable: 1
   color: 0
@@ -285,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
@@ -355,6 +368,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -423,6 +440,10 @@ PrefabInstance:
     - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
@@ -493,6 +514,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Single Cube 16 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010992350720, guid: abdf6fddf0669f142b480ca7b409c7f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010939704508, guid: abdf6fddf0669f142b480ca7b409c7f4, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -561,6 +586,10 @@ PrefabInstance:
     - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
@@ -631,6 +660,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -699,6 +732,10 @@ PrefabInstance:
     - target: {fileID: 1000012573622276, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
       propertyPath: m_Name
       value: Single Cube 6 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012573622276, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012572512082, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
       propertyPath: m_RootOrder
@@ -769,6 +806,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -837,6 +878,10 @@ PrefabInstance:
     - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x2 One Sided
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013851713610, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000013115723174, guid: 0e4d87a28010f3948b1b3697855fbb36, type: 3}
       propertyPath: m_RootOrder
@@ -911,6 +956,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010992350720, guid: abdf6fddf0669f142b480ca7b409c7f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010939704508, guid: abdf6fddf0669f142b480ca7b409c7f4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -979,6 +1028,10 @@ PrefabInstance:
     - target: {fileID: 1000012573622276, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
       propertyPath: m_Name
       value: Single Cube 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012573622276, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012572512082, guid: e404537c4cbd3f3409eb4924c59b2092, type: 3}
       propertyPath: m_RootOrder

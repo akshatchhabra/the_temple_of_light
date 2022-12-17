@@ -161,6 +161,4 @@ public class Column : MonoBehaviour
       return true;
     }
 
-
-
 }
