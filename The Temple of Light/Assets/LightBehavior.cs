@@ -183,6 +183,7 @@ public class LightBehavior : MonoBehaviour
 
             Angle lightAngle = new Angle((int)(transform.rotation.eulerAngles.y % 360 / 45));
             Angle colAngle = column.GetComponent<Column>().facing_angle;
+            column.GetComponent<Column>().is_lit = true;
 
             ColType type = column.GetComponent<Column>().type;
             switch (type)
