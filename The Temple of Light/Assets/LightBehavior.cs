@@ -19,6 +19,11 @@ public class Angle
         this.angle = Mod(angle, 8);
     }
 
+    public Angle(Quaternion rotation)
+    {
+        this.angle = Mod((int)(rotation.eulerAngles.y / 45f), 8);
+    }
+
     public static Angle operator -(Angle angle)
     {
         return new Angle(-angle.angle);
@@ -78,9 +83,19 @@ public class Angle
         this.angle = new Angle(angle).angle;
     }
 
-    public double ToDegrees()
+    public float ToDegrees()
     {
-        return this.angle * 45D;
+        return this.angle * 45f;
+    }
+
+    public double ToRadians()
+    {
+        return Math.PI * ToDegrees() / 180D;
+    }
+
+    public override string ToString()
+    {
+        return this.angle.ToString();
     }
 }
 
@@ -88,10 +103,11 @@ public class LightBehavior : MonoBehaviour
 {
     public GameObject lightObject;
     public float maxLength = 60f;
-    public Angle direction = new Angle(3);
+    public Angle direction = new Angle(0);
     public GameObject source;
     public LightBehavior parent = null;
     public int luminosity = 10;
+    public float lightHeight = 3.3f;
 
     private Vector3 unit;
     private Vector3 endpoint;
@@ -106,40 +122,50 @@ public class LightBehavior : MonoBehaviour
     {
         unit = GetUnitVector(direction);
         origin = source.transform.position;
+        origin.y = lightHeight;
         endpoint = origin + unit * maxLength;
         obstr = null;
         children = new List<LightBehavior>();
         lightColor = GetComponent<Renderer>().material.GetColor("_Color");
+        transform.position = origin;
+        transform.Rotate(-direction.ToDegrees(), 0f, 0f);
     }
 
     // Update is called once per frame
     void Update()
     {
         LayerMask layers =~ LayerMask.GetMask("Light");
-        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 1f, layers);
+        Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 0.25f, layers);
         if (colliders.Length >= 1)
         {
             GameObject prevObstr = obstr;
+            obstr = null;
             for (int i = 0; i < colliders.Length; i++)
             {
                 GameObject currObj = colliders[i].gameObject;
-                if (GameObject.ReferenceEquals(obstr, null) || Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position))
+                if (!GameObject.Equals(currObj, source) &&
+                    Vector3.Distance(origin, currObj.transform.position) > 1 &&
+                    (GameObject.ReferenceEquals(obstr, null) || 
+                        Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position)))
                 {
                     obstr = currObj;
                 }
             }
+            Debug.Log(obstr);
             if (!GameObject.ReferenceEquals(obstr, null))
             {
-                lightEnd = obstr.transform.position;
+                lightEnd = LinePoint(obstr.transform.position);
             }
             else
             {
                 lightEnd = endpoint;
             }
-            if (!GameObject.Equals(obstr, prevObstr))
+            if (GameObject.ReferenceEquals(obstr, null) || !GameObject.Equals(obstr, source))
             {
+                Debug.Log(origin);
+                Debug.Log(lightEnd);
                 transform.position = 0.5f * (origin + lightEnd);
-                transform.localScale = new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
+                transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
                 KillChildren();
             }
         }
@@ -181,7 +207,6 @@ public class LightBehavior : MonoBehaviour
                         CreateSplitLight(column, -colAngle);
                     }
                     break;
-                    
                 case ColType.CONVEX:
                     if (Angle.Distance(lightAngle, colAngle) <= 1)
                     {
@@ -290,7 +315,7 @@ public class LightBehavior : MonoBehaviour
 
     private Vector3 GetUnitVector(Angle angle)
     {
-        return new Vector3 ((float)Math.Cos(angle.ToDegrees()), 0, (float)Math.Sin(angle.ToDegrees()));
+        return new Vector3((float)Math.Cos(angle.ToRadians()), 0f, (float)Math.Sin(angle.ToRadians()));
     }
 
     private void KillChildren()
@@ -315,5 +340,40 @@ public class LightBehavior : MonoBehaviour
     public void RemoveChild(LightBehavior child)
     {
         children.Remove(child);
+    }
+
+    private Vector3 LinePoint(Vector3 target)
+    {
+        switch(direction.angle)
+        {
+            case 0:
+            case 4:
+                return new Vector3(target.x, lightHeight, origin.z);
+            case 2:
+            case 6:
+                return new Vector3(origin.x, lightHeight, target.z);
+            case 1: // +, +
+            {
+                float t = 0.5f * (target.x - origin.x + target.z - origin.z);
+                return new Vector3(origin.x + t, lightHeight, origin.z + t);
+            }
+            case 3: // -, +
+            {
+                float t = 0.5f * (-target.x + origin.x + target.z - origin.z);
+                return new Vector3(origin.x - t, lightHeight, origin.z + t);
+            }
+            case 5: // -, -
+            {
+                float t = 0.5f * (-target.x + origin.x - target.z + origin.z);
+                return new Vector3(origin.x - t, lightHeight, origin.z - t);
+            }
+            case 7: // +, -
+            {
+                float t = 0.5f * (target.x - origin.x - target.z + origin.z);
+                return new Vector3(origin.x + t, lightHeight, origin.z - t);
+            }
+            default:
+                return Vector3.zero;
+        }
     }
 }

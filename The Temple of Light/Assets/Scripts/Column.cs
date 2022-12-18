@@ -50,6 +50,7 @@ public class Column : MonoBehaviour
         // Remaining light handling can be done in the actual light class (or all of it, if you want)
 
     private bool being_carried;
+    private LightBehavior childLight;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,10 @@ public class Column : MonoBehaviour
       }
       being_carried = false;
       facing_angle = new Angle(facing);
+      if (type == ColType.LIGHT_EMIT)
+      {
+        childLight = CreateLight().GetComponent<LightBehavior>();
+      }
     }
 
     // Update is called once per frame
