@@ -151,7 +151,6 @@ public class LightBehavior : MonoBehaviour
                     obstr = currObj;
                 }
             }
-            Debug.Log(obstr);
             if (!GameObject.ReferenceEquals(obstr, null))
             {
                 lightEnd = LinePoint(obstr.transform.position);
@@ -162,8 +161,6 @@ public class LightBehavior : MonoBehaviour
             }
             if (GameObject.ReferenceEquals(obstr, null) || !GameObject.Equals(obstr, source))
             {
-                Debug.Log(origin);
-                Debug.Log(lightEnd);
                 transform.position = 0.5f * (origin + lightEnd);
                 transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
                 KillChildren();
