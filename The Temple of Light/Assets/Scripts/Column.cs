@@ -34,7 +34,7 @@ public class Column : MonoBehaviour
     public Angle facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
     public int[] position;            // Can be set when placing down a column to calculate in world coords
     public bool movable;
-    public LightColor color;              // color of the filter or required color of the receiver
+    public Color color;              // color of the filter or required color of the receiver
                                         // "white" if the column is not colored
     public GameObject player_reference;
     public GameObject lightObject;
@@ -50,6 +50,7 @@ public class Column : MonoBehaviour
         // Remaining light handling can be done in the actual light class (or all of it, if you want)
 
     private bool being_carried;
+    private LightBehavior childLight;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,10 @@ public class Column : MonoBehaviour
       }
       being_carried = false;
       facing_angle = new Angle(facing);
+      if (type == ColType.LIGHT_EMIT)
+      {
+        childLight = CreateLight().GetComponent<LightBehavior>();
+      }
     }
 
     // Update is called once per frame

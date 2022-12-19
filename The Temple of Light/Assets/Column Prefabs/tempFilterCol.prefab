@@ -110,9 +110,9 @@ GameObject:
   - component: {fileID: 9060142374498090116}
   - component: {fileID: 6093878780869832936}
   - component: {fileID: 8196315418944645141}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: tempFilterCol
-  m_TagString: Untagged
+  m_TagString: Column
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -201,7 +201,7 @@ MonoBehaviour:
   movable: 1
   color: 1
   player_reference: {fileID: 0}
-  lightObject: {fileID: 0}
+  lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
 --- !u!65 &8196315418944645141
 BoxCollider:
   m_ObjectHideFlags: 0
