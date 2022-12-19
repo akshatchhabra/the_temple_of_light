@@ -65,11 +65,17 @@ public class Column : MonoBehaviour
         movable = true;
       }
       being_carried = false;
+      facing = (int)((transform.eulerAngles.y - 90) / 45f);
+      if(type == ColType.LIGHT_EMIT)
+        facing = (int)((transform.eulerAngles.y + 90) / 45f) % 8;
+      if(type == ColType.LIGHT_RECV)
+        facing = (int)((transform.eulerAngles.y + 180) / 45f) % 8;
       facing_angle = new Angle(facing);
       if (type == ColType.LIGHT_EMIT)
       {
         childLight = CreateLight().GetComponent<LightBehavior>();
       }
+
     }
 
     // Update is called once per frame
@@ -91,68 +97,6 @@ public class Column : MonoBehaviour
         return childLight;
     }
 
-    /* Getters and Setters **/
-
-    //  The internal fields should be readable from other scripts, no get needed.
-    // However, none of the internal fields should be set manually.
-
-    //  Use set_light(true, angle, color) to add a light beam to a column
-    // and the remaining fields should autopopulate themselves.
-    //  Likewise, use set_light(false) to remove light from a column.
-
-    // NOTE: Albert, if you want to move some or all of this functionality
-    //  over to your Light class, you're welcome to.
-    //  I just figured that at least for mirrors and filters,
-    //  it'd be easier for the column to just tell you where to go next
-    //  and what color the beam should be.
-
-    // Add light coming in. Only accepts one beam at the moment.
-    // I'm assuming mirrors here are mirrored on both sides.
-    // public void set_light(bool status, int angle = -1, LightColor in_color = LightColor.NONE)
-    // {
-    //   is_lit = status;
-    //   lit_angle = angle;
-    //   lit_color = in_color;
-    //   // Calculate and update for mirrors
-    //   if(is_lit && (type == ColType.MIRROR || type == ColType.ONEWAY))
-    //   {
-    //     //calculate out angle
-    //     // TODO: Handling of semitransparent/oneway mirrors
-    //     int in_relative = (lit_angle - facing_angle + 8) % 8;
-    //     if(in_relative % 4 == 2) {
-    //       // Hitting the side of the mirror: no reflection
-    //       blocking = true;
-    //       out_angle = -1;
-    //       out_color = LightColor.NONE;
-    //     } else if (in_relative == 0 || in_relative == 4)
-    //     { // If it's reflecting right back down the line
-    //       blocking = false;
-    //       out_angle = lit_angle;
-    //       out_color = lit_color;
-    //     } else if(in_relative % 2 == 1) // If it's reflected at an angle
-    //     {
-    //       int rel_out = 8 - in_relative;  // calculate the reflected angle
-    //       out_angle = (rel_out + facing_angle) % 8;
-    //       out_color = lit_color;
-    //     } else
-    //     {
-    //       Debug.LogError("Invalid Light Angle.");
-    //     }
-    //   }
-    //   // Calculations for Color filter columns
-    //   if(is_lit && type == ColType.COLOR) // Calculates the out color using the color enum defined above
-    //   {
-    //     out_angle = lit_angle; // part being reflected back
-    //     out_color = (LightColor) Math.Max(((int)lit_color - (int)color), 0); // Reflected color (if we do that)
-    //     through_angle = (lit_angle + 4)%8; // part going through
-    //     through_color = (LightColor) Math.Max(((int)lit_color - (int)out_color), 0); // color that passes through (should be the column color or NONE)
-    //   }
-    //   // TODO: Handle the light creation column and light receiver column.
-    //   //   Light creation may have to be mostly implemented in the Light class,
-    //   //   as the current system doesn't handle vertical light angles.
-    //   //   However, the receiver should be easily enough implemented in this script.
-    //   //   I'll set up basic columns for both of them soon.
-    // }
 
     // I'll be impressed if this works first try but hey, I can't test it
     public bool pickUp() {
@@ -181,8 +125,10 @@ public class Column : MonoBehaviour
       if(!movable) {
         return false;
       }
-      facing_angle = facing_angle + dir;
-      transform.rotation = Quaternion.Euler(0f, (float)facing_angle.ToDegrees() - 90f, 0f);
+      facing = (facing + dir) %8;
+      facing_angle = new Angle(facing);
+
+      transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y + (45*dir), 0f);
       return true;
     }
 

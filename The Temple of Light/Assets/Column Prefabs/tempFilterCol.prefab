@@ -115,7 +115,7 @@ GameObject:
   m_TagString: Column
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &9071257773485485800
 Transform:
@@ -199,7 +199,7 @@ MonoBehaviour:
   facing: 0
   position: 
   movable: 1
-  color: 1
+  color: {r: 0, g: 0, b: 0, a: 0}
   player_reference: {fileID: 0}
   lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
 --- !u!65 &8196315418944645141
