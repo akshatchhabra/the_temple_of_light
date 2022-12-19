@@ -101,7 +101,6 @@ public class Angle
 
 public class LightBehavior : MonoBehaviour
 {
-    public GameObject lightObject;
     public float maxLength = 60f;
     public Angle direction = new Angle(0);
     public GameObject source;
@@ -134,38 +133,29 @@ public class LightBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        obstr = null;
         LayerMask layers =~ LayerMask.GetMask("Light");
         Collider[] colliders = Physics.OverlapCapsule(origin, endpoint, 0.25f, layers);
-        if (colliders.Length >= 1)
+        for (int i = 0; i < colliders.Length; i++)
         {
-            GameObject prevObstr = obstr;
-            obstr = null;
-            for (int i = 0; i < colliders.Length; i++)
+            GameObject currObj = colliders[i].gameObject;
+            if (Vector3.Distance(origin, currObj.transform.position) > 1 &&
+                (GameObject.ReferenceEquals(obstr, null) || 
+                    Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position)))
             {
-                GameObject currObj = colliders[i].gameObject;
-                if (!GameObject.Equals(currObj, source) &&
-                    Vector3.Distance(origin, currObj.transform.position) > 1 &&
-                    (GameObject.ReferenceEquals(obstr, null) || 
-                        Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position)))
-                {
-                    obstr = currObj;
-                }
-            }
-            if (!GameObject.ReferenceEquals(obstr, null))
-            {
-                lightEnd = LinePoint(obstr.transform.position);
-            }
-            else
-            {
-                lightEnd = endpoint;
-            }
-            if (GameObject.ReferenceEquals(obstr, null) || !GameObject.Equals(obstr, source))
-            {
-                transform.position = 0.5f * (origin + lightEnd);
-                transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
-                KillChildren();
+                obstr = currObj;
             }
         }
+        if (!GameObject.ReferenceEquals(obstr, null))
+        {
+            lightEnd = LinePoint(obstr.transform.position);
+        }
+        else
+        {
+            lightEnd = endpoint;
+        }
+        transform.position = 0.5f * (origin + lightEnd);
+        transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -178,7 +168,6 @@ public class LightBehavior : MonoBehaviour
         {
             GameObject column = other.gameObject;
 
-            Angle lightAngle = new Angle((int)(transform.rotation.eulerAngles.y % 360 / 45));
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
 
@@ -186,52 +175,52 @@ public class LightBehavior : MonoBehaviour
             switch (type)
             {
                 case ColType.MIRROR:
-                    if (Angle.Distance(lightAngle, colAngle) == 1)
+                    if (Angle.Distance(direction, colAngle) == 1)
                     {
-                        CreateLight(column, lightAngle + 2);
+                        CreateLight(column, direction + 2);
                     }
-                    else if (Angle.Distance(lightAngle, colAngle) == 3)
+                    else if (Angle.Distance(direction, colAngle) == 3)
                     {
-                        CreateLight(column, lightAngle - 2);
+                        CreateLight(column, direction - 2);
                     }
                     break;
                 case ColType.CONCAVE:
-                    if (Angle.Distance(lightAngle, colAngle) <= 1)
+                    if (Angle.Distance(direction, colAngle) <= 1)
                     {
-                        CreateSplitLight(column, colAngle);
+                        CreateSplitLight(column, direction);
                     }
-                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
+                    else if (Angle.Distance(direction, colAngle) >= 3)
                     {
                         CreateSplitLight(column, -colAngle);
                     }
                     break;
                 case ColType.CONVEX:
-                    if (Angle.Distance(lightAngle, colAngle) <= 1)
+                    if (Angle.Distance(direction, colAngle) <= 1)
                     {
                         CreateLight(column, colAngle);
                     }
-                    else if (Angle.Distance(lightAngle, colAngle) >= 3)
+                    else if (Angle.Distance(direction, colAngle) >= 3)
                     {
                         CreateLight(column, -colAngle);
                     }
                     break;
                 case ColType.ONEWAY:
-                    if (lightAngle == colAngle)
+                    if (direction == colAngle)
                     {
-                        CreateLight(column, lightAngle);
+                        CreateLight(column, direction);
                     }
                     break;
                 case ColType.COLOR:
-                    Color colColor = column.GetComponent<Renderer>().material.GetColor("_Color");
-                    if (HasColor(colColor) && NotSide(colAngle, lightAngle))
+                    Color colColor = column.GetComponent<Column>().color;
+                    if (HasColor(colColor) && NotSide(colAngle))
                     {
-                        CreateColorLight(column, colColor, lightAngle);
+                        CreateColorLight(column, colColor, direction);
                     }
                     break;
                 case ColType.PRISM:
-                    if (NotSide(colAngle, lightAngle))
+                    if (NotSide(colAngle))
                     {
-                        CreatePrismLight(column, lightAngle);
+                        CreatePrismLight(column, direction);
                     }
                     break;
                 default:
@@ -245,16 +234,25 @@ public class LightBehavior : MonoBehaviour
         }
     }
 
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Column")
+        {
+            KillChildren();
+        }
+    }
+
     private GameObject CreateColorLight(GameObject column, Color color, Angle angle)
     {
         if (luminosity <= 0)
         {
             return null;
         }
-        GameObject childLight = Instantiate(lightObject);
+        GameObject childLight = Instantiate(column.GetComponent<Column>().lightObject);
         Material childMaterial = childLight.GetComponent<Renderer>().material;
-        childMaterial.SetColor("_Color", color);
-        childMaterial.SetColor("_EmissionColor", color);
+        Color colorA = new Color(color.r, color.g, color.b, lightColor.a);
+        childMaterial.SetColor("_Color", colorA);
+        childMaterial.SetColor("_EmissionColor", colorA);
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
         childBehavior.direction = angle;
         childBehavior.source = column;
@@ -300,9 +298,9 @@ public class LightBehavior : MonoBehaviour
         return output;
     }
 
-    private bool NotSide(Angle colAngle, Angle lightAngle)
+    private bool NotSide(Angle colAngle)
     {
-        return Angle.Distance(lightAngle, colAngle) != 2;
+        return Angle.Distance(direction, colAngle) != 2;
     }
 
     private bool HasColor(Color color)
@@ -318,9 +316,9 @@ public class LightBehavior : MonoBehaviour
 
     private void KillChildren()
     {
-        foreach (LightBehavior child in children)
+        for (int i = children.Count - 1; i >= 0; i--)
         {
-            child.Kill();
+            children[i].Kill();
         }
         children = new List<LightBehavior>();
     }
@@ -332,7 +330,7 @@ public class LightBehavior : MonoBehaviour
         {
             parent.RemoveChild(this);
         }
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     public void RemoveChild(LightBehavior child)

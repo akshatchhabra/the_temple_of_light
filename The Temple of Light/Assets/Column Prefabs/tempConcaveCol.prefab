@@ -110,9 +110,9 @@ GameObject:
   - component: {fileID: 6472638467535764917}
   - component: {fileID: 8142146862772269529}
   - component: {fileID: 6183530707727673636}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: tempConcaveCol
-  m_TagString: Untagged
+  m_TagString: Column
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -201,7 +201,7 @@ MonoBehaviour:
   movable: 1
   color: 0
   player_reference: {fileID: 0}
-  lightObject: {fileID: 0}
+  lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
 --- !u!65 &6183530707727673636
 BoxCollider:
   m_ObjectHideFlags: 0

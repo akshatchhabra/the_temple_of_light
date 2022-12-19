@@ -34,7 +34,7 @@ public class Column : MonoBehaviour
     public Angle facing_angle;          // facing angle, 0-7 from 0=-x,0z to 7=-x,-z clockwise in 45 deg turns
     public int[] position;            // Can be set when placing down a column to calculate in world coords
     public bool movable;
-    public LightColor color;              // color of the filter or required color of the receiver
+    public Color color;              // color of the filter or required color of the receiver
                                         // "white" if the column is not colored
     public GameObject player_reference;
     public GameObject lightObject;

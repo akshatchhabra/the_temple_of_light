@@ -276,9 +276,9 @@ GameObject:
   - component: {fileID: 6817127765907140595}
   - component: {fileID: 8626245550573724575}
   - component: {fileID: 5951634019953441634}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MirrorCol
-  m_TagString: Untagged
+  m_TagString: Column
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -367,10 +367,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  facing: 0
   position: 
   movable: 1
   color: 0
   player_reference: {fileID: 0}
+  lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
 --- !u!65 &5951634019953441634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -379,7 +381,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6830120567403734469}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 8.481328, y: 18, z: 8.481361}
