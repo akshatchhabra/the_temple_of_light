@@ -73,7 +73,7 @@ public class Angle
         return base.GetHashCode();
     }
 
-    public static int Distance(Angle angle1, Angle angle2)
+    public static int Distance(Angle angle1, Angle angle2) // positive distance from angle2 to angle1
     {
         return (angle1 - angle2).angle;
     }
@@ -158,6 +158,11 @@ public class LightBehavior : MonoBehaviour
         transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
     }
 
+    public void ManualEnter(Collider other)
+    {
+        OnTriggerEnter(other);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (GameObject.Equals(other.gameObject, source))
@@ -170,57 +175,97 @@ public class LightBehavior : MonoBehaviour
 
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
+            column.GetComponent<Column>().lit_color = lightColor;
 
             ColType type = column.GetComponent<Column>().type;
+            int distance = Angle.Distance(direction, colAngle);
             switch (type)
             {
                 case ColType.MIRROR:
-                    if (Angle.Distance(direction, colAngle) == 1)
+                    switch (distance)
                     {
-                        CreateLight(column, direction + 2);
-                    }
-                    else if (Angle.Distance(direction, colAngle) == 3)
-                    {
-                        CreateLight(column, direction - 2);
+                        case 1:
+                        case 5:
+                            CreateLight(column, direction + 2);
+                            break;
+                        case 3:
+                        case 7:
+                            CreateLight(column, direction - 2);
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 case ColType.CONCAVE:
-                    if (Angle.Distance(direction, colAngle) <= 1)
+                    switch (distance)
                     {
-                        CreateSplitLight(column, direction);
-                    }
-                    else if (Angle.Distance(direction, colAngle) >= 3)
-                    {
-                        CreateSplitLight(column, -colAngle);
+                        case 2:
+                        case 6:
+                            break;
+                        default:
+                            CreateSplitLight(column, direction);
+                            break;
                     }
                     break;
                 case ColType.CONVEX:
-                    if (Angle.Distance(direction, colAngle) <= 1)
+                    switch (distance)
                     {
-                        CreateLight(column, colAngle);
-                    }
-                    else if (Angle.Distance(direction, colAngle) >= 3)
-                    {
-                        CreateLight(column, -colAngle);
+                        case 0:
+                        case 1:
+                        case 7:
+                            CreateLight(column, colAngle);
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            CreateLight(column, -colAngle);
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 case ColType.ONEWAY:
-                    if (direction == colAngle)
+                    switch (distance)
                     {
-                        CreateLight(column, direction);
+                        case 0:
+                        case 1:
+                        case 7:
+                            CreateLight(column, direction);
+                            break;
+                        case 3:
+                            CreateLight(column, direction - 2);
+                            break;
+                        case 5:
+                            CreateLight(column, direction + 2);
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 case ColType.COLOR:
-                    Color colColor = column.GetComponent<Column>().color;
-                    if (HasColor(colColor) && NotSide(colAngle))
+                    switch (distance)
                     {
-                        CreateColorLight(column, colColor, direction);
+                        case 2:
+                        case 6:
+                            break;
+                        default:
+                            Color colColor = column.GetComponent<Column>().color;
+                            if (HasColor(colColor))
+                            {
+                                CreateColorLight(column, colColor, direction);
+                            }
+                            break;
                     }
                     break;
                 case ColType.PRISM:
-                    if (NotSide(colAngle))
+                    switch (distance)
                     {
-                        CreatePrismLight(column, direction);
+                        case 2:
+                        case 6:
+                            break;
+                        default:
+                            CreatePrismLight(column, direction);
+                            break;
                     }
                     break;
                 default:
@@ -298,14 +343,8 @@ public class LightBehavior : MonoBehaviour
         return output;
     }
 
-    private bool NotSide(Angle colAngle)
-    {
-        return Angle.Distance(direction, colAngle) != 2;
-    }
-
     private bool HasColor(Color color)
     {
-        Color lightColor = GetComponent<Renderer>().material.GetColor("_Color");
         return lightColor.r >= color.r && lightColor.g >= color.g && lightColor.b >= color.b;
     }
 
@@ -314,7 +353,7 @@ public class LightBehavior : MonoBehaviour
         return new Vector3((float)Math.Cos(angle.ToRadians()), 0f, (float)Math.Sin(angle.ToRadians()));
     }
 
-    private void KillChildren()
+    public void KillChildren()
     {
         for (int i = children.Count - 1; i >= 0; i--)
         {
@@ -340,7 +379,7 @@ public class LightBehavior : MonoBehaviour
 
     private Vector3 LinePoint(Vector3 target)
     {
-        switch(direction.angle)
+        switch (direction.angle)
         {
             case 0:
             case 4:
