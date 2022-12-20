@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Column
   - Wall
+  - sourceCol
   layers:
   - Default
   - TransparentFX

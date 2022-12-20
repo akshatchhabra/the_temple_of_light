@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
           }
           just_entered = false;
 
-          if(Input.GetKeyDown(KeyCode.Escape)) { // leave placing mode
+          if(Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown("q")) { // leave placing mode
             Destroy(sel_indicator);
             in_placing_mode = false;
             level.softPause(false);

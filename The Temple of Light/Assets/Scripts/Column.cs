@@ -29,6 +29,7 @@ public class Column : MonoBehaviour
     public GameObject player_reference;
     public GameObject lightObject;
     public level Level;
+    public GameObject lit_light;
 
     public bool is_lit;             // whether or not the column is receiving a light beam
     internal Color lit_color;         // color of incoming light. "NONE" if not lit.
@@ -63,6 +64,7 @@ public class Column : MonoBehaviour
         childLight = CreateLight().GetComponent<LightBehavior>();
         Level.source_cols.Add(this);
         Level.source_lights.Add(childLight);
+        is_lit = true;
       }
       player_reference = GameObject.Find("Player");
       if(!player_reference) {
@@ -70,6 +72,8 @@ public class Column : MonoBehaviour
       }
       carry_height = 4;
       offset = new Vector3(0f,carry_height,0f);
+
+
     }
 
 
@@ -79,12 +83,15 @@ public class Column : MonoBehaviour
       if(being_carried) {
         transform.position = player_reference.transform.position + offset;
       }
-      // //DEBUG
-      // if(Input.GetKeyDown("r")) {
-      //   RotateCol();
-      //}
-      if(!parentLight) {
+
+      if(!parentLight && type != ColType.LIGHT_EMIT) {
         is_lit = false;
+      }
+
+      if(is_lit) {
+        lit_light.SetActive(true);
+      } else {
+        lit_light.SetActive(false);
       }
 
       if (type == ColType.LIGHT_EMIT && !childLight)
