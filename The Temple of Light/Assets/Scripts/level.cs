@@ -11,6 +11,10 @@ public class level : MonoBehaviour
     public int[,] placeable;
     public int xdim;
     public int ydim;
+    public int max_x;     // Level dimensions for placement shit
+    public int max_z;
+    public int min_x;
+    public int min_z;
 
     private bool has_won = false;
 
@@ -41,5 +45,13 @@ public class level : MonoBehaviour
       }
     }
 
+    public static void setPause(bool pause) {
+      if(pause) {
+        Time.timeScale = 0;
+      } else {
+        Time.timeScale = 1;
+      }
+      return;
+    }
 
 }
