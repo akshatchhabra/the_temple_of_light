@@ -33,8 +33,11 @@ public class Column : MonoBehaviour
     internal Color lit_color;         // color of incoming light. "NONE" if not lit.
         // Remaining light handling can be done in the actual light class (or all of it, if you want)
 
+    private float carry_height;
     private bool being_carried;
     private LightBehavior childLight;
+    private Vector3 offset;
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,19 +58,24 @@ public class Column : MonoBehaviour
       {
         childLight = CreateLight().GetComponent<LightBehavior>();
       }
-
+      player_reference = GameObject.Find("Player");
+      if(!player_reference) {
+        Debug.LogError("Player not found");
+      }
+      carry_height = 4;
+      offset = new Vector3(0f,carry_height,0f);
     }
 
     // Update is called once per frame
     void Update()
     {
       if(being_carried) {
-        transform.position = player_reference.transform.position + new Vector3(0f,2f,0f);
+        transform.position = player_reference.transform.position + offset;
       }
-      //DEBUG
-      if(Input.GetKeyDown("r")) {
-        RotateCol();
-      }
+      // //DEBUG
+      // if(Input.GetKeyDown("r")) {
+      //   RotateCol();
+      //}
 
 
     }
@@ -90,11 +98,13 @@ public class Column : MonoBehaviour
 
       transform.localScale = new Vector3(.125f, .125f, .125f);
       // Values subject to change, working blind here
-      transform.position = player_reference.transform.position + new Vector3(0f,2f,0f);
+      transform.position = player_reference.transform.position + offset;
       being_carried = true;
       return true;
     }
-
+        // Defs for the placement mode
+        private GameObject sel_indicator;
+        private int[] sel_pos;
     public bool putDown(int xcoord, int ycoord) {
       if(!movable) {
         Debug.LogError("Immovable columns should not be able to be put down.");
