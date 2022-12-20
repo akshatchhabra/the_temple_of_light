@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool is_moving_column = Input.GetKey("e");
+        animation_controller.SetBool("is_moving_column", is_moving_column);
         float horizontal_axis = Input.GetAxis("Horizontal");
         float vertical_axis = Input.GetAxis("Vertical");
         movement_direction = new Vector3(horizontal_axis, 0.0f, vertical_axis);
