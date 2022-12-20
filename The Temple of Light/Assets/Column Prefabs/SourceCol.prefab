@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 4368933476201158621}
   m_Layer: 0
   m_Name: SourceCol
-  m_TagString: Untagged
+  m_TagString: sourceCol
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -465,6 +465,7 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   player_reference: {fileID: 0}
   lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
+  is_lit: 0
 --- !u!1001 &1575695479973982880
 PrefabInstance:
   m_ObjectHideFlags: 0

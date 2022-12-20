@@ -64,10 +64,9 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown("e") && !in_placing_mode)
         {
           in_placing_mode = true;
-          Debug.Log("Entering Placing Mode");
           just_entered = true;
           sel_indicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
-          level.setPause(true);
+          level.softPause(true);
           // Get the closest center square of the player
           player_pos[0] = roundToOdd(transform.position.x);
           player_pos[1] = roundToOdd(transform.position.z);
@@ -78,7 +77,7 @@ public class Player : MonoBehaviour
         {
           bool placeable;
           // Put a cube down at the base of the selected area
-          sel_indicator.transform.localScale = new Vector3(2f,0.25f, 2f);
+          sel_indicator.transform.localScale = new Vector3(2.2f,0.25f, 2.2f);
           // Move the selection, keeping it adjacent to the player's position
           if(Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.UpArrow)) {
             sel_pos[1] = Math.Min(sel_pos[1] + 1, 1);
@@ -119,7 +118,7 @@ public class Player : MonoBehaviour
             if(sel_pos[0] == 0 && sel_pos[1] == 0) { // can't place it on yourself
               Destroy(sel_indicator);
               in_placing_mode = false;
-              level.setPause(false);
+              level.softPause(false);
               return;
             }
             if(placeable && carrying) { // put down carried column
@@ -128,7 +127,7 @@ public class Player : MonoBehaviour
               carried_column = null;
               Destroy(sel_indicator);
               in_placing_mode = false;
-              level.setPause(false);
+              level.softPause(false);
             }
             if(!carrying && col) { // pick up column
               if(col.pickUp()){ // returns false if column is immovable
@@ -136,18 +135,18 @@ public class Player : MonoBehaviour
                 carrying = true;
                 Destroy(sel_indicator);
                 in_placing_mode = false;
-                level.setPause(false);
+                level.softPause(false);
               }
             }
             if(carrying && col) { // Columns in both places - no
               Destroy(sel_indicator);
               in_placing_mode = false;
-              level.setPause(false);
+              level.softPause(false);
             }
             if(!carrying && placeable) { // empty and empty - exit
               Destroy(sel_indicator);
               in_placing_mode = false;
-              level.setPause(false);
+              level.softPause(false);
             }
           }
           if(Input.GetKeyDown("r") && col) {
@@ -158,7 +157,7 @@ public class Player : MonoBehaviour
           if(Input.GetKeyDown(KeyCode.Escape)) { // leave placing mode
             Destroy(sel_indicator);
             in_placing_mode = false;
-            level.setPause(false);
+            level.softPause(false);
           }
         }
 
@@ -180,12 +179,10 @@ public class Player : MonoBehaviour
     {
       Collider[] colliders = Physics.OverlapSphere(new Vector3 (x, 2f, z), 0.9f);
       if(colliders.Length >= 1) {
-        Debug.Log("Collisions: " + colliders.Length);
         foreach(Collider collider in colliders) {
           GameObject c_object = collider.gameObject;
           // Only return false for things that block placement - cols and walls
           if(c_object.tag != "Wall" && c_object.tag != "Column") {
-            Debug.Log(c_object.name);
             continue;
           } else {
             return false;
