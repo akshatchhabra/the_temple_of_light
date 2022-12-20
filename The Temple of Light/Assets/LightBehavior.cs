@@ -119,10 +119,12 @@ public class LightBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        origin = this.transform.position;
         unit = GetUnitVector(direction);
         origin = source.transform.position;
         origin.y = lightHeight;
         endpoint = origin + unit * maxLength;
+        Debug.Log(endpoint);
         obstr = null;
         children = new List<LightBehavior>();
         lightColor = GetComponent<Renderer>().material.GetColor("_Color");
@@ -160,12 +162,13 @@ public class LightBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (GameObject.Equals(other.gameObject, source))
+        if (GameObject.Equals(other.gameObject, source) || other.gameObject.name == "light")
         {
             return;
         }
         if (other.tag == "Column")
         {
+            Debug.Log("Hit a column!");
             GameObject column = other.gameObject;
 
             Angle colAngle = column.GetComponent<Column>().facing_angle;
