@@ -46,7 +46,11 @@ public class level : MonoBehaviour
     }
 
     public static void setPause(bool pause) {
-      //TODO: pause menu
+      if(pause) {
+        Time.timeScale = 0;
+      } else {
+        Time.timeScale = 1;
+      }
       return;
     }
 
