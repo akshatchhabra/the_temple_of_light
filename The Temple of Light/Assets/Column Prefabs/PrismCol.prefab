@@ -106,8 +106,9 @@ MonoBehaviour:
   color: {r: 0, g: 0, b: 0, a: 0}
   player_reference: {fileID: 0}
   lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
-  Level: {fileID: 0}
+  levelID: 
   lit_light: {fileID: 7777421497485152843}
+  end_door: {fileID: 0}
   is_lit: 0
 --- !u!65 &353875407286172163
 BoxCollider:
@@ -133,6 +134,7 @@ GameObject:
   - component: {fileID: 8648206384074736843}
   - component: {fileID: 142365257041916501}
   - component: {fileID: 8430674290882080394}
+  - component: {fileID: 297801192743658617}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -205,6 +207,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &297801192743658617
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4644307985911777825}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000005, y: 0.020000005, z: 0.02}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7777421497485152843
 GameObject:
   m_ObjectHideFlags: 0

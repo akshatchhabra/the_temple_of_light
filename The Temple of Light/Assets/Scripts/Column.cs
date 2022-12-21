@@ -28,14 +28,16 @@ public class Column : MonoBehaviour
                                         // "white" if the column is not colored
     public GameObject player_reference;
     public GameObject lightObject;
-    public level Level;
+    public string levelID;
     public GameObject lit_light;
+    public GameObject end_door;         // only if an end column
 
     public bool is_lit;             // whether or not the column is receiving a light beam
     internal Color lit_color;         // color of incoming light. "NONE" if not lit.
     internal LightBehavior childLight;
     internal LightBehavior parentLight;
 
+    private level Level;
     private float carry_height;
     private bool being_carried;
     private Vector3 offset;
@@ -44,7 +46,7 @@ public class Column : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      Level = GameObject.Find("Level").GetComponent<level>();
+      Level = GameObject.Find(levelID).GetComponent<level>();
       if(!Level)
         Debug.LogError("Level not found.");
       is_lit = false;
@@ -52,8 +54,14 @@ public class Column : MonoBehaviour
       if((int)type < 7) {
         movable = true;
       }
+      if(color == null) {
+        color = Color.white;
+      }
       being_carried = false;
       facing = (((int)transform.eulerAngles.y + 1) / 45);
+      if(type == ColType.COLOR) {
+        facing = (facing + 2) % 8;
+      }
       if(type == ColType.LIGHT_EMIT)
         facing = (((int)transform.eulerAngles.y + 91) / -45) % 8;
       if(type == ColType.LIGHT_RECV)
@@ -61,7 +69,7 @@ public class Column : MonoBehaviour
       facing_angle = new Angle(facing);
       if (type == ColType.LIGHT_EMIT)
       {
-        childLight = CreateLight().GetComponent<LightBehavior>();
+        childLight = CreateLight(color).GetComponent<LightBehavior>();
         Level.source_cols.Add(this);
         Level.source_lights.Add(childLight);
         is_lit = true;
@@ -72,6 +80,7 @@ public class Column : MonoBehaviour
       }
       carry_height = 4;
       offset = new Vector3(0f,carry_height,0f);
+
 
 
     }
@@ -96,7 +105,7 @@ public class Column : MonoBehaviour
 
       if (type == ColType.LIGHT_EMIT && !childLight)
       {
-        childLight = CreateLight().GetComponent<LightBehavior>();
+        childLight = CreateLight(color).GetComponent<LightBehavior>();
         Level.source_cols.Add(this);
         Level.source_lights.Add(childLight);
       }
@@ -105,7 +114,7 @@ public class Column : MonoBehaviour
 
     }
 
-    internal GameObject CreateLight()
+    internal GameObject CreateLight(Color color)
     {
         GameObject childLight = Instantiate(lightObject);
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
