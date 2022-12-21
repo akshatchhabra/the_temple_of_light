@@ -169,7 +169,6 @@ public class LightBehavior : MonoBehaviour
 
     public void ManualEnter(Collider other)
     {
-        Debug.Log("Manual enter triggered");
         OnTriggerEnter(other);
     }
 
@@ -185,10 +184,9 @@ public class LightBehavior : MonoBehaviour
 
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
-            column.GetComponent<Column>().lit_color = lightColor;
+            column.GetComponent<Column>().addColor(lightColor);
             if(!column.GetComponent<Column>().parentLight){
               column.GetComponent<Column>().parentLight = this;
-              Debug.Log("Set parent light of column");
             }
 
             ColType type = column.GetComponent<Column>().type;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelSwitcher : MonoBehaviour
 {
@@ -11,11 +12,12 @@ public class LevelSwitcher : MonoBehaviour
     public level current_level;
     public Camera main_camera;
     public Player player;
+    public Text instructions_text;
 
     // Internal fields
     internal List<string> levelIDs;
     internal Dictionary<string,level> levels = new Dictionary<string,level>();
-
+    internal Dictionary<string,string> instructions = new Dictionary<string, string>();
     // Private fields
     private Vector3 player_start_pos = new Vector3(-5f, 0f, -5f);
     private bool level_timeout = false;
@@ -26,7 +28,7 @@ public class LevelSwitcher : MonoBehaviour
     {
         //levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
         //  "tut05","tut06","tut07","tut08","Level01","Level02","Level03","victory"};
-        levelIDs = new List<string>{"tut01","mainmenu"};
+        levelIDs = new List<string>{"tut01","tut02","tut03","mainmenu"};
         foreach(string name in levelIDs)
         {
           levels.Add(name, GameObject.Find(name).GetComponent<level>());
@@ -35,6 +37,15 @@ public class LevelSwitcher : MonoBehaviour
         if(current_level_id == null) {
           current_level_id = "tut01";
         }
+
+// TODO info dictionary shit here
+
+
+
+
+
+
+
         goToLevel(current_level_id);
     }
 
@@ -72,7 +83,9 @@ public class LevelSwitcher : MonoBehaviour
 
       main_camera.transform.rotation = cam_angle;
       main_camera.transform.position = level_pos + cameraPos;
+      player.GetComponent<CharacterController>().enabled = false;
       player.transform.position = level_pos + player_start_pos;
+      player.GetComponent<CharacterController>().enabled = true;
       current_level = nextLevel;
       current_level_id = current_level.name;
 
