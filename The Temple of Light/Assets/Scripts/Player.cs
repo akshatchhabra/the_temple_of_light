@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         animation_controller = GetComponent<Animator>();
         character_controller = GetComponent<CharacterController>();
         movement_direction = new Vector3(0.0f, 0.0f, 0.0f);
-        velocity = 3.0f;
+        velocity = 5.0f;
         rotation_speed = 50.0f;
         turn_smooth_time = 0.1f;
         in_placing_mode = false;
