@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class Bat : MonoBehaviour
 {
 
+    public static bool just_activated = false;
+    public static bool just_died = false;
+
     private Animator animation_controller;
     // private CharacterController character_controller;
     private NavMeshAgent bat;
@@ -39,12 +42,14 @@ public class Bat : MonoBehaviour
     {
         if (Vector3.Distance(player_position.position, transform.position) < detection_radius){
             bat.SetDestination(player_position.position);
+            just_activated = true;
         }
         else{
             bat.SetDestination(bat_original_position);
         }
         if (is_dead && Time.time - time_of_death > 3.0f){
             Destroy(gameObject);
+            just_died = true;
         }
         if (is_taking_damage && Time.time - prev_hit_time > 2.0f){
             player_dummy.TakeDamage(1);
