@@ -31,7 +31,7 @@ public class LevelSwitcher : MonoBehaviour
           levels.Add("level1",GameObject.Find("level1").GetComponent<level>());
         }
         levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
-          "tut05","tut06","tut07","tut08","Level01","Level02","Level03","victory"};
+          "tut05","tut06","tut07","tut08","victory"}; //,"Level01","Level02","Level03"
         foreach(string name in levelIDs)
         {
           levels.Add(name, GameObject.Find(name).GetComponent<level>());
