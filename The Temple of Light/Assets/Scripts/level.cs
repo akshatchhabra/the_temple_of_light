@@ -15,7 +15,11 @@ public class level : MonoBehaviour
     public int max_z;
     public int min_x;
     public int min_z;
+    public static bool globalPause; // stop creature movement but not anims
 
+
+    internal List<LightBehavior> source_lights = new List<LightBehavior>();   // for refreshing on rotation
+    internal List<Column> source_cols = new List<Column>();
     private bool has_won = false;
 
     // Start is called before the first frame update
@@ -45,13 +49,39 @@ public class level : MonoBehaviour
       }
     }
 
-    public static void setPause(bool pause) {
+    public static void setPause(bool pause)
+    {
       if(pause) {
         Time.timeScale = 0;
       } else {
         Time.timeScale = 1;
       }
       return;
+    }
+
+    public static void softPause(bool pause)
+    {
+      if(pause) {
+        globalPause = true;
+      } else {
+        globalPause = false;
+      }
+    }
+
+    public void refreshLights(Column source) // Refreshing all the lights in the level
+    {
+      for(int i=0; i< source_lights.Count; i++) {
+        Debug.Log(source_lights.Count);
+        LightBehavior light_obj = source_lights[i];
+        source_lights.Remove(light_obj);
+        light_obj.Kill();
+      }
+      // foreach(Column source_col in source_cols) {
+      //   LightBehavior newLight = source_col.CreateLight().GetComponent<LightBehavior>();
+      //   source_lights.Add(newLight);
+      // }
+      if(source.parentLight)
+        source.parentLight.ManualEnter(source.GetComponent<Collider>());
     }
 
 }

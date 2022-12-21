@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311915, g: 0.3807396, b: 0.35872662, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.38073987, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -290,6 +290,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2268661328233223952, guid: ae4ad4293f83f5df189a8cebb08a4464, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6828809482104913311, guid: ae4ad4293f83f5df189a8cebb08a4464, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -344,17 +348,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae4ad4293f83f5df189a8cebb08a4464, type: 3}
---- !u!114 &66636402 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1049546319168457168, guid: 060dbaabea13867fa819ecf5020e5a57, type: 3}
-  m_PrefabInstance: {fileID: 1983076656}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a544b1ebb214a9953871a354a010c4d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &86817499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -595,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6189141548601169028, guid: 912b9060dbbb9362cb619e13448a9223, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6189141548601169028, guid: 912b9060dbbb9362cb619e13448a9223, type: 3}
       propertyPath: m_LocalPosition.x
@@ -648,6 +641,10 @@ PrefabInstance:
     - target: {fileID: 6190627659251518686, guid: 912b9060dbbb9362cb619e13448a9223, type: 3}
       propertyPath: m_Name
       value: SourceCol
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190627659251518686, guid: 912b9060dbbb9362cb619e13448a9223, type: 3}
+      propertyPath: m_TagString
+      value: sourceCol
       objectReference: {fileID: 0}
     - target: {fileID: 6190627659251518686, guid: 912b9060dbbb9362cb619e13448a9223, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -977,7 +974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010273486942, guid: 67f0474ce7d8d344fa04ba561d36d761, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4000010273486942, guid: 67f0474ce7d8d344fa04ba561d36d761, type: 3}
       propertyPath: m_LocalScale.x
@@ -1066,7 +1063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010798276088, guid: 0f75f4e957deb4b4e8a99d44440a8c70, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010798276088, guid: 0f75f4e957deb4b4e8a99d44440a8c70, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1257,6 +1254,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2268661328233223952, guid: ae4ad4293f83f5df189a8cebb08a4464, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6828809482104913311, guid: ae4ad4293f83f5df189a8cebb08a4464, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1574,7 +1575,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!1 &1302067601
 GameObject:
@@ -2108,6 +2109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 711e3a0c308564227bb6814c09b633a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+
   bat_original_position: {x: 0, y: 0, z: 0}
   player_position: {fileID: 1768596209}
   detection_radius: 0
@@ -2115,6 +2117,7 @@ MonoBehaviour:
   is_dead: 0
   time_of_death: 0
 --- !u!65 &1618105314
+
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2138,6 +2141,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
+
   m_Height: 0.05
   m_Radius: 0.015
   m_SlopeLimit: 45

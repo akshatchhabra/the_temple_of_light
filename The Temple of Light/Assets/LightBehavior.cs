@@ -115,6 +115,7 @@ public class LightBehavior : MonoBehaviour
     private Vector3 origin;
     private Vector3 lightEnd;
     private Color lightColor;
+    private bool isSource;
 
     // Start is called before the first frame update
     void Start()
@@ -124,16 +125,19 @@ public class LightBehavior : MonoBehaviour
         origin = source.transform.position;
         origin.y = lightHeight;
         endpoint = origin + unit * maxLength;
-        Debug.Log(endpoint);
         obstr = null;
         children = new List<LightBehavior>();
         lightColor = GetComponent<Renderer>().material.GetColor("_Color");
         transform.position = origin;
         transform.Rotate(-direction.ToDegrees(), 0f, 0f);
+        if(!parent)
+          isSource = true;
+        else
+          isSource = false;
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         obstr = null;
         LayerMask layers =~ LayerMask.GetMask("Light");
@@ -142,7 +146,7 @@ public class LightBehavior : MonoBehaviour
         {
             GameObject currObj = colliders[i].gameObject;
             if (Vector3.Distance(origin, currObj.transform.position) > 1 &&
-                (GameObject.ReferenceEquals(obstr, null) || 
+                (GameObject.ReferenceEquals(obstr, null) ||
                     Vector3.Distance(origin, obstr.transform.position) > Vector3.Distance(origin, currObj.transform.position)))
             {
                 obstr = currObj;
@@ -158,10 +162,14 @@ public class LightBehavior : MonoBehaviour
         }
         transform.position = 0.5f * (origin + lightEnd);
         transform.localScale = 0.5f * new Vector3(1, Vector3.Distance(origin, lightEnd), 1);
+        if(!parent && !isSource) {
+          Kill();
+        }
     }
 
     public void ManualEnter(Collider other)
     {
+        Debug.Log("Manual enter triggered");
         OnTriggerEnter(other);
     }
 
@@ -173,12 +181,15 @@ public class LightBehavior : MonoBehaviour
         }
         if (other.tag == "Column")
         {
-            Debug.Log("Hit a column!");
             GameObject column = other.gameObject;
 
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
             column.GetComponent<Column>().lit_color = lightColor;
+            if(!column.GetComponent<Column>().parentLight){
+              column.GetComponent<Column>().parentLight = this;
+              Debug.Log("Set parent light of column");
+            }
 
             ColType type = column.GetComponent<Column>().type;
             int distance = Angle.Distance(direction, colAngle);
