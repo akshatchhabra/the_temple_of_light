@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         animation_controller.SetBool("is_hit", is_hit);
         animation_controller.SetBool("is_moving_column", !in_placing_mode && carrying && Input.GetKeyDown("e"));
         // Only allow movement if not placing an object
-        if(!in_placing_mode) {
+        if(!in_placing_mode && !level.globalPause) {
           float horizontal_axis = Input.GetAxis("Horizontal");
           float vertical_axis = Input.GetAxis("Vertical");
           movement_direction = new Vector3(horizontal_axis, 0.0f, vertical_axis);
