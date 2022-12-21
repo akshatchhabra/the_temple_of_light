@@ -169,7 +169,6 @@ public class LightBehavior : MonoBehaviour
 
     public void ManualEnter(Collider other)
     {
-        Debug.Log("Manual enter triggered");
         OnTriggerEnter(other);
     }
 
@@ -182,13 +181,14 @@ public class LightBehavior : MonoBehaviour
         if (other.tag == "Column")
         {
             GameObject column = other.gameObject;
-
+            if(!column.GetComponent<Column>()) {
+              column = column.transform.parent.gameObject;
+            }
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
-            column.GetComponent<Column>().lit_color = lightColor;
+            column.GetComponent<Column>().addColor(lightColor);
             if(!column.GetComponent<Column>().parentLight){
               column.GetComponent<Column>().parentLight = this;
-              Debug.Log("Set parent light of column");
             }
 
             ColType type = column.GetComponent<Column>().type;
@@ -247,10 +247,10 @@ public class LightBehavior : MonoBehaviour
                             CreateLight(column, direction);
                             break;
                         case 3:
-                            CreateLight(column, direction - 2);
+                            CreateLight(column, direction + 2);
                             break;
                         case 5:
-                            CreateLight(column, direction + 2);
+                            CreateLight(column, direction - 2);
                             break;
                         default:
                             break;

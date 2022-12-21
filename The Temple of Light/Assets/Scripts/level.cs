@@ -5,7 +5,9 @@ using UnityEngine;
 public class level : MonoBehaviour
 {
     public Column end_col;
-    public GameObject del_door;
+    public Column second_end_col; // Yes I'm aware there are better ways.
+    public Column third_end_col;  // But it's 4:30 am.
+    public int num_ends;
     public GameObject exit;
     public GameObject player;
     public int[,] placeable;
@@ -16,36 +18,32 @@ public class level : MonoBehaviour
     public int min_x;
     public int min_z;
     public static bool globalPause; // stop creature movement but not anims
-
+    public string next_level_id;
 
     internal List<LightBehavior> source_lights = new List<LightBehavior>();   // for refreshing on rotation
     internal List<Column> source_cols = new List<Column>();
-    private bool has_won = false;
+    internal Vector3 start_pos;
+    internal LevelSwitcher ls;
 
     // Start is called before the first frame update
     void Start()
     {
         if(!end_col)
           Debug.LogError("End Column not found.");
-        if(!del_door)
+        if(!end_col.end_door)
           Debug.LogError("Doorway Block not found.");
         if(!player)
           Debug.LogError("Player object not found.");
+        ls = GameObject.Find("LevelSwitcher").GetComponent<LevelSwitcher>();
     }
 
     // Update is called once per frame
     void Update()
     {
-      if(end_col.is_lit) {
-        del_door.GetComponent<MeshRenderer>().enabled = false;
-      }
+      checkCompletion();
       if(exit.GetComponent<EndDoor>().player_collision) {
-        has_won = true;
-        Debug.Log("Player completed level");
-
-        // TODO: other level changing stuff here
         exit.GetComponent<EndDoor>().player_collision = false;
-
+        ls.moveToNextLevel();
       }
     }
 
@@ -82,6 +80,34 @@ public class level : MonoBehaviour
       // }
       if(source.parentLight)
         source.parentLight.ManualEnter(source.GetComponent<Collider>());
+    }
+
+    private bool checkCompletion() {
+      if(num_ends == 1) {
+        if(end_col.is_lit && end_col.checkColor()) {
+          end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
+          return true;
+        }
+      } else if(num_ends == 2) {
+        if(end_col.is_lit && end_col.checkColor() &&
+        second_end_col.is_lit && second_end_col.checkColor()) {
+          end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
+          return true;
+        }
+      } else if(num_ends == 3) {
+        if(end_col.is_lit && end_col.checkColor() &&
+        second_end_col.is_lit && second_end_col.checkColor() &&
+        third_end_col.is_lit && third_end_col.checkColor()) {
+          end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
+          return true;
+        }
+      } else {
+        Debug.LogError("No end columns!");
+      }
+      return false;
     }
 
 }

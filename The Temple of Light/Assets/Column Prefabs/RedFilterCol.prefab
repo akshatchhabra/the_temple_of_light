@@ -108,8 +108,9 @@ MonoBehaviour:
   color: {r: 1, g: 0, b: 0, a: 1}
   player_reference: {fileID: 0}
   lightObject: {fileID: 1517368579759157249, guid: 2cf901a5772ebb14a9b95feebd6587b8, type: 3}
-  Level: {fileID: 0}
+  levelID: 
   lit_light: {fileID: 4893736016024341856}
+  end_door: {fileID: 0}
   is_lit: 0
 --- !u!65 &74341660306481960
 BoxCollider:
@@ -280,7 +281,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 736a3773a07347194a56af85df884f01, type: 2}
+  - {fileID: 2100000, guid: 2777531d33d590bc385d3bc46843c6d2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

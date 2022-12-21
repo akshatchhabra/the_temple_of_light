@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public enum ColType {
   MIRROR = 1,
@@ -28,14 +28,17 @@ public class Column : MonoBehaviour
                                         // "white" if the column is not colored
     public GameObject player_reference;
     public GameObject lightObject;
-    public level Level;
+    public string levelID;
     public GameObject lit_light;
+    public GameObject end_door;         // only if an end column
+    public Material tint_mat;
 
     public bool is_lit;             // whether or not the column is receiving a light beam
     internal Color lit_color;         // color of incoming light. "NONE" if not lit.
     internal LightBehavior childLight;
     internal LightBehavior parentLight;
 
+    private level Level;
     private float carry_height;
     private bool being_carried;
     private Vector3 offset;
@@ -44,16 +47,27 @@ public class Column : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      Level = GameObject.Find("Level").GetComponent<level>();
+      Level = GameObject.Find(levelID).GetComponent<level>();
       if(!Level)
         Debug.LogError("Level not found.");
+      player_reference = GameObject.Find("Player");
+      if(!player_reference) {
+        Debug.LogError("Player not found");
+      }
+      if(levelID == null) {
+        levelID = this.transform.parent.gameObject.name;
+      }
+
       is_lit = false;
       lit_color = Color.black;
-      if((int)type < 7) {
-        movable = true;
+
+      if(color == null || color == Color.black || color == new Color(0f,0f,0f,0f)) {
+        color = Color.white;
       }
       being_carried = false;
-      facing = (((int)transform.eulerAngles.y + 1) / 45);
+      facing = (((int)transform.eulerAngles.y + 1) / 45) + 2 % 8;
+      if(type == ColType.ONEWAY || type == ColType.MIRROR)
+        facing = facing -2;
       if(type == ColType.LIGHT_EMIT)
         facing = (((int)transform.eulerAngles.y + 91) / -45) % 8;
       if(type == ColType.LIGHT_RECV)
@@ -61,18 +75,30 @@ public class Column : MonoBehaviour
       facing_angle = new Angle(facing);
       if (type == ColType.LIGHT_EMIT)
       {
-        childLight = CreateLight().GetComponent<LightBehavior>();
+        childLight = CreateColorLight(color).GetComponent<LightBehavior>();
         Level.source_cols.Add(this);
         Level.source_lights.Add(childLight);
         is_lit = true;
       }
-      player_reference = GameObject.Find("Player");
-      if(!player_reference) {
-        Debug.LogError("Player not found");
-      }
-      carry_height = 4;
+      carry_height = 5;
       offset = new Vector3(0f,carry_height,0f);
 
+      // Visibly show locked columns
+      if(type != ColType.LIGHT_EMIT && type != ColType.LIGHT_RECV && !movable) {
+        GameObject lock_indicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        lock_indicator.transform.localScale = new Vector3(2.2f,0.6f, 2.2f);
+        lock_indicator.transform.position = this.transform.position;
+        lock_indicator.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+      }
+
+      // Use the same to tint colored emitters/receivers
+      // if((type == ColType.LIGHT_EMIT || type == ColType.LIGHT_RECV) && (color != Color.white && color!= Color.black)) {
+      //   GameObject tint_indicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
+      //   tint_indicator.transform.localScale = new Vector3(2.2f, 1f, 2.2f);
+      //   tint_indicator.transform.position = this.transform.position;
+      //   tint_indicator.GetComponent<Renderer>().material = tint_mat;
+      //   tint_indicator.GetComponent<Renderer>().material.SetColor("_Color", color);
+      // }
 
     }
 
@@ -86,6 +112,7 @@ public class Column : MonoBehaviour
 
       if(!parentLight && type != ColType.LIGHT_EMIT) {
         is_lit = false;
+        lit_color = new Color(0f,0f,0f,0f);
       }
 
       if(is_lit) {
@@ -96,7 +123,7 @@ public class Column : MonoBehaviour
 
       if (type == ColType.LIGHT_EMIT && !childLight)
       {
-        childLight = CreateLight().GetComponent<LightBehavior>();
+        childLight = CreateColorLight(color).GetComponent<LightBehavior>();
         Level.source_cols.Add(this);
         Level.source_lights.Add(childLight);
       }
@@ -105,7 +132,7 @@ public class Column : MonoBehaviour
 
     }
 
-    internal GameObject CreateLight()
+    internal GameObject CreateLight(Color color)
     {
         GameObject childLight = Instantiate(lightObject);
         LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
@@ -115,6 +142,20 @@ public class Column : MonoBehaviour
         return childLight;
     }
 
+    internal GameObject CreateColorLight(Color color)
+    {
+
+        GameObject childLight = Instantiate(lightObject);
+        Material childMaterial = childLight.GetComponent<Renderer>().material;
+        Color colorA = new Color(color.r, color.g, color.b, 0.5f);
+        childMaterial.SetColor("_Color", colorA);
+        childMaterial.SetColor("_EmissionColor", colorA);
+        LightBehavior childBehavior = childLight.GetComponent<LightBehavior>();
+        childBehavior.direction = facing_angle;
+        childBehavior.source = gameObject;
+        childLight.SetActive(true);
+        return childLight;
+    }
 
     public bool pickUp() {
       if(!movable)
@@ -150,5 +191,25 @@ public class Column : MonoBehaviour
       return true;
     }
 
+    private Color mergeColors(Color color1, Color color2) {
+      float r = Math.Max(color1.r, color2.r);
+      float g = Math.Max(color1.g, color2.g);
+      float b = Math.Max(color1.b, color2.b);
+      float a = Math.Max(color1.a, color2.a);
+      return new Color(r,g,b,a);
+    }
+
+    internal void addColor(Color new_color) {
+      if(lit_color == null) {
+        lit_color = new_color;
+      } else {
+        lit_color = mergeColors(lit_color, new_color);
+      }
+    }
+
+    internal bool checkColor()
+    {
+        return lit_color.r >= color.r && lit_color.g >= color.g && lit_color.b >= color.b;
+    }
 
 }

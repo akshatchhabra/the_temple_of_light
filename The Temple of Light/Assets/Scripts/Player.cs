@@ -210,9 +210,10 @@ public class Player : MonoBehaviour
 
     Column getColumn(float x, float z) {
       Collider[] colliders = Physics.OverlapSphere(new Vector3 (x, 2f, z), 0.9f);
-      if(colliders.Length > 1) {
+      if(colliders.Length >= 1) {
         foreach(Collider collider in colliders) {
           GameObject c_object = collider.gameObject;
+          Debug.Log(c_object.name);
           if(c_object.tag == "Column") {
             return c_object.GetComponent<Column>();
           }
