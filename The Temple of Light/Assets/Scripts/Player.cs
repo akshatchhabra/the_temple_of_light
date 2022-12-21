@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class Player : MonoBehaviour
     public float rotation_speed;
     public float turn_smooth_time;
     public bool is_hit;
+    public Slider health_bar;
+    public Gradient gradient;
+	  public Image fill;
 
     private bool in_placing_mode;         // Toggling the movement lock
     private int[] player_pos;
@@ -24,6 +28,7 @@ public class Player : MonoBehaviour
     // Defs for the placement mode
     private GameObject sel_indicator;
     private int[] sel_pos;
+    private int player_health;
 
 
     // Start is called before the first frame update
@@ -38,11 +43,16 @@ public class Player : MonoBehaviour
         in_placing_mode = false;
         player_pos = new int[2]{0,0};
         is_hit = false;
+        player_health = 10;
+        SetMaxHealth(player_health);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(player_health <= 0){
+          // Change to you're dead screen.
+        }
         animation_controller.SetBool("is_hit", is_hit);
         animation_controller.SetBool("is_moving_column", !in_placing_mode && carrying && Input.GetKeyDown("e"));
         // Only allow movement if not placing an object
@@ -216,4 +226,26 @@ public class Player : MonoBehaviour
       }
     }
 
+  public void SetMaxHealth(int health)
+	{
+		health_bar.maxValue = health;
+		health_bar.value = health;
+
+		fill.color = gradient.Evaluate(1f);
+	}
+
+  public void SetHealth(int health)
+	{
+		health_bar.value = health;
+
+		fill.color = gradient.Evaluate(health_bar.normalizedValue);
+	}
+
+  public void TakeDamage(int damage)
+	{
+		player_health -= damage;
+    Debug.Log("Health: " + player_health.ToString());
+
+		SetHealth(player_health);
+	}
 }

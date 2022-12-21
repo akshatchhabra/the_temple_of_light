@@ -9,6 +9,8 @@ public class Bat : MonoBehaviour
     private Animator animation_controller;
     // private CharacterController character_controller;
     private NavMeshAgent bat;
+    private bool is_taking_damage;
+    private float prev_hit_time;
 
     public Vector3 bat_original_position;
     public Transform player_position;
@@ -16,18 +18,20 @@ public class Bat : MonoBehaviour
     public float reset_radius;
     public bool is_dead;
     public float time_of_death;
+    public Player player_dummy;
 
     // Start is called before the first frame update
     void Start()
     {
         animation_controller = GetComponent<Animator>();
-        // character_controller = GetComponent<CharacterController>();
         bat = GetComponent<NavMeshAgent>();
         bat_original_position = transform.position;
         detection_radius = 10.0f;
         reset_radius = 0.5f;
         is_dead = false;
         time_of_death = Time.time;
+        is_taking_damage = false;
+        prev_hit_time = Time.time;
     }
 
     // Update is called once per frame
@@ -42,6 +46,10 @@ public class Bat : MonoBehaviour
         if (is_dead && Time.time - time_of_death > 3.0f){
             Destroy(gameObject);
         }
+        if (is_taking_damage && Time.time - prev_hit_time > 2.0f){
+            player_dummy.TakeDamage(1);
+            prev_hit_time = Time.time;
+        }
     }
 
     // Bat only activates if player enters square/rectangular area that's near the bat
@@ -51,20 +59,15 @@ public class Bat : MonoBehaviour
             animation_controller.SetBool("is_attacking", true);
             Player player = collider.GetComponent<Player>();
             player.is_hit = true;
+            is_taking_damage = true;
         }
-        // if (collider.name == "light(Clone)"){
-        //     Debug.Log("Here");
-        //     animation_controller.SetBool("is_dead", true);
-        //     // yield return new WaitForSeconds(GetComponent<Animation>()["bat_death"].length);
-        //     Destroy(gameObject);
-        //     //find time since light hit to determine how long 
-        // }
     }
     void OnTriggerExit(Collider collider){
         if (collider.name == "Player"){
             animation_controller.SetBool("is_attacking", false);
             Player player = collider.GetComponent<Player>();
             player.is_hit = false;
+            is_taking_damage = false;
         }
     }
 }
