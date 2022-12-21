@@ -22,6 +22,10 @@ public class LevelSwitcher : MonoBehaviour
     private Vector3 player_start_pos = new Vector3(-5f, 0f, -5f);
     private bool level_timeout = false;
     private string path = "save.txt";
+    private GameObject pause_menu;
+    private GameObject game_play_menu;
+    private GameObject main_menu;
+    private string state;
 
     // Start is called before the first frame update
     void Start()
@@ -43,19 +47,37 @@ public class LevelSwitcher : MonoBehaviour
 
 // TODO info dictionary shit here
 
-
-
-
-
-
-
+        game_play_menu = GameObject.Find("GameplayCanvas");
+        pause_menu = GameObject.Find("PauseMenuCanvas");
+        main_menu = GameObject.Find("MainMenuCanvas");
+        game_play_menu.SetActive(false);
+        pause_menu.SetActive(false);
+        main_menu.SetActive(false);
         goToLevel(current_level_id);
+        // state takes 3 values: pause, play, mainmenu
+        // set this back to mainmenu
+        state = "play";
     }
 
     // Update is called once per frame
     void Update()
     {
-
+      if (state == "pause"){
+        game_play_menu.SetActive(false);
+        pause_menu.SetActive(true);
+        main_menu.SetActive(false);
+      }
+      else if (state == "play"){
+        game_play_menu.SetActive(true);
+        pause_menu.SetActive(false);
+        main_menu.SetActive(false);
+      }
+      else if (state == "mainmenu"){
+        game_play_menu.SetActive(false);
+        pause_menu.SetActive(false);
+        main_menu.SetActive(true);
+      }
+      
     }
 
     public void moveToNextLevel()
@@ -137,4 +159,7 @@ public class LevelSwitcher : MonoBehaviour
       return out_line;
     }
 
+    public void SetState(string curr_state){
+      state = curr_state;
+    }
 }

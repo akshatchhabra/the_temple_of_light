@@ -37,18 +37,23 @@ public class Bat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(player_position.position, transform.position) < detection_radius){
-            bat.SetDestination(player_position.position);
-        }
-        else{
-            bat.SetDestination(bat_original_position);
-        }
-        if (is_dead && Time.time - time_of_death > 3.0f){
-            Destroy(gameObject);
-        }
-        if (is_taking_damage && Time.time - prev_hit_time > 2.0f){
-            player_dummy.TakeDamage(1);
-            prev_hit_time = Time.time;
+        if (!level.globalPause){
+            if (Vector3.Distance(player_position.position, transform.position) < detection_radius){
+                bat.SetDestination(player_position.position);
+            }
+            else{
+                bat.SetDestination(bat_original_position);
+            }
+            if (is_dead && Time.time - time_of_death > 3.0f){
+                Destroy(gameObject);
+            }
+            if (is_taking_damage && Time.time - prev_hit_time > 2.0f){
+                player_dummy.TakeDamage(1);
+                prev_hit_time = Time.time;
+            }
+            if(is_dead){
+                player_dummy.is_hit = false;
+            }
         }
     }
 
@@ -56,10 +61,12 @@ public class Bat : MonoBehaviour
     // if player exits that area, bat goes back to its original position.
     void OnTriggerEnter(Collider collider){
         if (collider.name == "Player"){
-            animation_controller.SetBool("is_attacking", true);
-            Player player = collider.GetComponent<Player>();
-            player.is_hit = true;
-            is_taking_damage = true;
+            if (!level.globalPause){
+                animation_controller.SetBool("is_attacking", true);
+                Player player = collider.GetComponent<Player>();
+                player.is_hit = true;
+                is_taking_damage = true;
+            }
         }
     }
     void OnTriggerExit(Collider collider){
