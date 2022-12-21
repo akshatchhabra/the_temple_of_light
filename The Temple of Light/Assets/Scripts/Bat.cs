@@ -6,6 +6,9 @@ using UnityEngine.AI;
 public class Bat : MonoBehaviour
 {
 
+    public static bool just_activated = false;
+    public static bool just_died = false;
+
     private Animator animation_controller;
     // private CharacterController character_controller;
     private NavMeshAgent bat;
@@ -54,6 +57,7 @@ public class Bat : MonoBehaviour
             if(is_dead){
                 player_dummy.is_hit = false;
             }
+
         }
     }
 

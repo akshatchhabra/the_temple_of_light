@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public Gradient gradient;
 	  public Image fill;
 
+    public static bool just_hit = false;
+
     private bool in_placing_mode;         // Toggling the movement lock
     private int[] player_pos;
     private bool carrying;
@@ -243,7 +245,7 @@ public class Player : MonoBehaviour
 	{
 		player_health -= damage;
     Debug.Log("Health: " + player_health.ToString());
-
+    just_hit = true;
 		SetHealth(player_health);
 	}
 }

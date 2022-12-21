@@ -20,6 +20,9 @@ public class level : MonoBehaviour
     public static bool globalPause; // stop creature movement but not anims
     public string next_level_id;
 
+    public static bool door_opened = false; //  for audio
+    private bool last_check = false;
+
     internal List<LightBehavior> source_lights = new List<LightBehavior>();   // for refreshing on rotation
     internal List<Column> source_cols = new List<Column>();
     internal Vector3 start_pos;
@@ -40,7 +43,11 @@ public class level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      checkCompletion();
+      bool just_won = checkCompletion();
+      if(last_check != just_won) {
+        door_opened = true;
+        last_check = just_won;
+      }
       if(exit.GetComponent<EndDoor>().player_collision) {
         exit.GetComponent<EndDoor>().player_collision = false;
         ls.moveToNextLevel();

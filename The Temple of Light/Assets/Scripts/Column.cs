@@ -32,6 +32,7 @@ public class Column : MonoBehaviour
     public GameObject lit_light;
     public GameObject end_door;         // only if an end column
     public Material tint_mat;
+    public static bool moved_col = false;
 
     public bool is_lit;             // whether or not the column is receiving a light beam
     internal Color lit_color;         // color of incoming light. "NONE" if not lit.
@@ -161,6 +162,7 @@ public class Column : MonoBehaviour
       // Values subject to change, working blind here
       transform.position = player_reference.transform.position + offset;
       being_carried = true;
+      moved_col = true;
       return true;
     }
 
@@ -172,6 +174,7 @@ public class Column : MonoBehaviour
       transform.localScale = new Vector3(.25f, .25f, .25f);
       transform.position = new Vector3(xcoord, 0, ycoord);
       being_carried = false;
+      moved_col = true;
       return true;
     }
 
@@ -183,6 +186,7 @@ public class Column : MonoBehaviour
       facing_angle = new Angle(facing);
       transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y + (45*dir), 0f);
       Level.refreshLights(this);
+      moved_col = true;
 
       return true;
     }
