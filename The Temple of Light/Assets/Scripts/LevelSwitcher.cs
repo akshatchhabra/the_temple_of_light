@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelSwitcher : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class LevelSwitcher : MonoBehaviour
     public level current_level;
     public Camera main_camera;
     public Player player;
-    public Text instructions_text;
+    public TMP_Text linked_text;
+    public string instructions_text;
 
     // Internal fields
     internal List<string> levelIDs;
@@ -45,7 +47,7 @@ public class LevelSwitcher : MonoBehaviour
           current_level_id = "mainmenu";
         }
 
-// TODO info dictionary shit here
+
 
         game_play_menu = GameObject.Find("GameplayCanvas");
         pause_menu = GameObject.Find("PauseMenuCanvas");
@@ -77,7 +79,32 @@ public class LevelSwitcher : MonoBehaviour
         pause_menu.SetActive(false);
         main_menu.SetActive(true);
       }
-      
+      if(current_level_id == "tut01") {
+        instructions_text = "Use wasd or the arrow keys to move. Pick up a column by hitting E and moving the selection box with wasd or arrow keys. Press E to pick up/put down a column, and Q or Esc to exit this mode. Make the light reach the receiver column.";
+      }
+      if(current_level_id == "tut02") {
+        instructions_text = "Now, try using R while in the selection mode to rotate the column.";
+      }
+      if(current_level_id == "tut03") {
+        instructions_text = "Light beams of different colors can combine. Try using this convex lens to point them both at the receiver.";
+      }
+      if(current_level_id == "tut04") {
+        instructions_text = "A concave lens can spread the light out into multiple beams.";
+      }
+      if(current_level_id == "tut05") {
+        instructions_text = "Colored filters will only allow certain light through, and colored receivers only accept light of their own color.";
+      }
+      if(current_level_id == "tut06") {
+        instructions_text = "This level isn't in rotation at the moment. God help you.";
+      }
+      if(current_level_id == "tut07") {
+        instructions_text = "Bats will attack you if you get near them. Try frying them with light. Also, this one way mirror looks interesting. Let's see what it does.";
+      }
+      if(current_level_id == "tut08") {
+        instructions_text = "Columns with darker bases have been locked; you cannot move them. Try finding a different way to solve this level.";
+      }
+      linked_text.text = instructions_text;
+
     }
 
     public void moveToNextLevel()
