@@ -54,6 +54,9 @@ public class Column : MonoBehaviour
       if(!player_reference) {
         Debug.LogError("Player not found");
       }
+      if(levelID == null) {
+        levelID = this.transform.parent.gameObject.name;
+      }
 
       is_lit = false;
       lit_color = Color.black;
@@ -63,7 +66,7 @@ public class Column : MonoBehaviour
       }
       being_carried = false;
       facing = (((int)transform.eulerAngles.y + 1) / 45) + 2 % 8;
-      if(type == ColType.ONEWAY)
+      if(type == ColType.ONEWAY || type == ColType.MIRROR)
         facing = facing -2;
       if(type == ColType.LIGHT_EMIT)
         facing = (((int)transform.eulerAngles.y + 91) / -45) % 8;
