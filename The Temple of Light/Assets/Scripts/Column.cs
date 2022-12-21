@@ -91,14 +91,10 @@ public class Column : MonoBehaviour
         lock_indicator.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
       }
 
-      // Use the same to tint colored emitters/receivers
-      // if((type == ColType.LIGHT_EMIT || type == ColType.LIGHT_RECV) && (color != Color.white && color!= Color.black)) {
-      //   GameObject tint_indicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
-      //   tint_indicator.transform.localScale = new Vector3(2.2f, 1f, 2.2f);
-      //   tint_indicator.transform.position = this.transform.position;
-      //   tint_indicator.GetComponent<Renderer>().material = tint_mat;
-      //   tint_indicator.GetComponent<Renderer>().material.SetColor("_Color", color);
-      // }
+      if(type == ColType.LIGHT_RECV && color != Color.white) {
+        Light color_ind_light = transform.GetChild(16).GetComponent<Light>();
+        color_ind_light.color = color;
+      }
 
     }
 
@@ -209,7 +205,7 @@ public class Column : MonoBehaviour
 
     internal bool checkColor()
     {
-        return lit_color.r >= color.r && lit_color.g >= color.g && lit_color.b >= color.b;
+        return lit_color.r == color.r && lit_color.g == color.g && lit_color.b == color.b;
     }
 
 }

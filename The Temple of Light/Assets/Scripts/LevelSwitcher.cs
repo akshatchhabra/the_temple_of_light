@@ -26,9 +26,12 @@ public class LevelSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
-        //  "tut05","tut06","tut07","tut08","Level01","Level02","Level03","victory"};
-        levelIDs = new List<string>{"tut01","tut02","tut03","mainmenu"};
+        if(SceneManager.GetActiveScene().name == "level1") {
+          levelIDs = new List<string>{"level1"};
+          levels.Add("level1",GameObject.Find("level1").GetComponent<level>());
+        }
+        levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
+          "tut05","tut06","tut07","tut08","Level01","Level02","Level03","victory"};
         foreach(string name in levelIDs)
         {
           levels.Add(name, GameObject.Find(name).GetComponent<level>());

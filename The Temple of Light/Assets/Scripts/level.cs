@@ -30,7 +30,7 @@ public class level : MonoBehaviour
     {
         if(!end_col)
           Debug.LogError("End Column not found.");
-        if(!end_col.end_door)
+        else if(!end_col.end_door)
           Debug.LogError("Doorway Block not found.");
         if(!player)
           Debug.LogError("Player object not found.");
