@@ -35,7 +35,7 @@ public class LevelSwitcher : MonoBehaviour
         }
         current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "tut01";
+          current_level_id = "tut02";
         }
 
 // TODO info dictionary shit here

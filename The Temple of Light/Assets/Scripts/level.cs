@@ -86,12 +86,14 @@ public class level : MonoBehaviour
       if(num_ends == 1) {
         if(end_col.is_lit && end_col.checkColor()) {
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
           return true;
         }
       } else if(num_ends == 2) {
         if(end_col.is_lit && end_col.checkColor() &&
         second_end_col.is_lit && second_end_col.checkColor()) {
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
           return true;
         }
       } else if(num_ends == 3) {
@@ -99,6 +101,7 @@ public class level : MonoBehaviour
         second_end_col.is_lit && second_end_col.checkColor() &&
         third_end_col.is_lit && third_end_col.checkColor()) {
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
+          end_col.end_door.SetActive(false);
           return true;
         }
       } else {

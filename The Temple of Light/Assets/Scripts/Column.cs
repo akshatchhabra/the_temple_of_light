@@ -50,6 +50,11 @@ public class Column : MonoBehaviour
       Level = GameObject.Find(levelID).GetComponent<level>();
       if(!Level)
         Debug.LogError("Level not found.");
+      player_reference = GameObject.Find("Player");
+      if(!player_reference) {
+        Debug.LogError("Player not found");
+      }
+
       is_lit = false;
       lit_color = Color.black;
 
@@ -57,10 +62,9 @@ public class Column : MonoBehaviour
         color = Color.white;
       }
       being_carried = false;
-      facing = (((int)transform.eulerAngles.y + 1) / 45);
-      if(type == ColType.COLOR || type == ColType.CONVEX || type == ColType.CONCAVE) {
-        facing = (facing + 2) % 8;
-      }
+      facing = (((int)transform.eulerAngles.y + 1) / 45) + 2 % 8;
+      if(type == ColType.ONEWAY)
+        facing = facing -2;
       if(type == ColType.LIGHT_EMIT)
         facing = (((int)transform.eulerAngles.y + 91) / -45) % 8;
       if(type == ColType.LIGHT_RECV)
@@ -73,11 +77,7 @@ public class Column : MonoBehaviour
         Level.source_lights.Add(childLight);
         is_lit = true;
       }
-      player_reference = GameObject.Find("Player");
-      if(!player_reference) {
-        Debug.LogError("Player not found");
-      }
-      carry_height = 4;
+      carry_height = 5;
       offset = new Vector3(0f,carry_height,0f);
 
       // Visibly show locked columns

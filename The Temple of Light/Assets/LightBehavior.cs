@@ -181,7 +181,9 @@ public class LightBehavior : MonoBehaviour
         if (other.tag == "Column")
         {
             GameObject column = other.gameObject;
-
+            if(!column.GetComponent<Column>()) {
+              column = column.transform.parent.gameObject;
+            }
             Angle colAngle = column.GetComponent<Column>().facing_angle;
             column.GetComponent<Column>().is_lit = true;
             column.GetComponent<Column>().addColor(lightColor);
@@ -245,10 +247,10 @@ public class LightBehavior : MonoBehaviour
                             CreateLight(column, direction);
                             break;
                         case 3:
-                            CreateLight(column, direction - 2);
+                            CreateLight(column, direction + 2);
                             break;
                         case 5:
-                            CreateLight(column, direction + 2);
+                            CreateLight(column, direction - 2);
                             break;
                         default:
                             break;
