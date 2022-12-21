@@ -30,7 +30,7 @@ public class LevelSwitcher : MonoBehaviour
           levelIDs = new List<string>{"level1"};
           levels.Add("level1",GameObject.Find("level1").GetComponent<level>());
         }
-        levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
+        levelIDs = new List<string>{"mainmenu","tut01","tut02","tut03","tut04",
           "tut05","tut06","tut07","tut08","victory"}; //,"Level01","Level02","Level03"
         foreach(string name in levelIDs)
         {
@@ -38,7 +38,7 @@ public class LevelSwitcher : MonoBehaviour
         }
         current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "tut02";
+          current_level_id = "mainmenu";
         }
 
 // TODO info dictionary shit here
