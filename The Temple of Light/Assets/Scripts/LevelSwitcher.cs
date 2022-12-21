@@ -26,16 +26,19 @@ public class LevelSwitcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //levelIDs = new List<string>{"tut01","tut02","tut03","tut04",
-        //  "tut05","tut06","tut07","tut08","Level01","Level02","Level03","victory"};
-        levelIDs = new List<string>{"tut01","tut02","tut03","mainmenu"};
+        if(SceneManager.GetActiveScene().name == "level1") {
+          levelIDs = new List<string>{"level1"};
+          levels.Add("level1",GameObject.Find("level1").GetComponent<level>());
+        }
+        levelIDs = new List<string>{"mainmenu","tut01","tut02","tut03","tut04",
+          "tut05","tut06","tut07","tut08","victory"}; //,"Level01","Level02","Level03"
         foreach(string name in levelIDs)
         {
           levels.Add(name, GameObject.Find(name).GetComponent<level>());
         }
         current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "tut02";
+          current_level_id = "tut07";
         }
 
 // TODO info dictionary shit here
@@ -74,7 +77,7 @@ public class LevelSwitcher : MonoBehaviour
         cameraPos = new Vector3(8f, 25f, -8f);
       }
       Quaternion cam_angle = Quaternion.Euler(60f, 0f, 0f);
-      if(nextLevel.name == "mainmenu") {
+      if(nextLevel.name == "mainmenu" || nextLevel.name == "victory") {
         cameraPos = new Vector3(0f, 5f, -8f);
         cam_angle = Quaternion.Euler(15f, 0f, 0f);
       } else if(nextLevel.name == "victory") {

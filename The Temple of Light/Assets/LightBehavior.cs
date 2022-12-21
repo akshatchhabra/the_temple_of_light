@@ -101,7 +101,7 @@ public class Angle
 
 public class LightBehavior : MonoBehaviour
 {
-    public float maxLength = 60f;
+    public float maxLength = 120f;
     public Angle direction = new Angle(0);
     public GameObject source;
     public LightBehavior parent = null;

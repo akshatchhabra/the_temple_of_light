@@ -30,7 +30,7 @@ public class level : MonoBehaviour
     {
         if(!end_col)
           Debug.LogError("End Column not found.");
-        if(!end_col.end_door)
+        else if(!end_col.end_door)
           Debug.LogError("Doorway Block not found.");
         if(!player)
           Debug.LogError("Player object not found.");
@@ -88,14 +88,14 @@ public class level : MonoBehaviour
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
           end_col.end_door.SetActive(false);
           return true;
-        }
+        } else {return false;}
       } else if(num_ends == 2) {
         if(end_col.is_lit && end_col.checkColor() &&
         second_end_col.is_lit && second_end_col.checkColor()) {
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
           end_col.end_door.SetActive(false);
           return true;
-        }
+        } else {return false;}
       } else if(num_ends == 3) {
         if(end_col.is_lit && end_col.checkColor() &&
         second_end_col.is_lit && second_end_col.checkColor() &&
@@ -103,9 +103,9 @@ public class level : MonoBehaviour
           end_col.end_door.GetComponent<MeshRenderer>().enabled = false;
           end_col.end_door.SetActive(false);
           return true;
-        }
+        } else {return false;}
       } else {
-        Debug.LogError("No end columns!");
+        Debug.LogError("No end columns! " + this.name);
       }
       return false;
     }
