@@ -289,7 +289,11 @@ public class LightBehavior : MonoBehaviour
 
         if (other.tag == "Monster")
         {
-            //TODO
+            Bat bat = other.GetComponent<Bat>();
+            bat.is_dead = true;
+            bat.time_of_death = Time.time;
+            Animator bat_animator = other.GetComponent<Animator>();
+            bat_animator.SetBool("is_dead", true);
         }
     }
 
