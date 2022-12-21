@@ -42,7 +42,7 @@ public class LevelSwitcher : MonoBehaviour
         }
         current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "tut07";
+          current_level_id = "mainmenu";
         }
 
 // TODO info dictionary shit here
@@ -56,7 +56,7 @@ public class LevelSwitcher : MonoBehaviour
         goToLevel(current_level_id);
         // state takes 3 values: pause, play, mainmenu
         // set this back to mainmenu
-        state = "play";
+        state = "mainmenu";
     }
 
     // Update is called once per frame
