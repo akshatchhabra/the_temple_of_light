@@ -38,7 +38,7 @@ public class LevelSwitcher : MonoBehaviour
         }
         current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "mainmenu";
+          current_level_id = "tut07";
         }
 
 // TODO info dictionary shit here
@@ -77,7 +77,7 @@ public class LevelSwitcher : MonoBehaviour
         cameraPos = new Vector3(8f, 25f, -8f);
       }
       Quaternion cam_angle = Quaternion.Euler(60f, 0f, 0f);
-      if(nextLevel.name == "mainmenu") {
+      if(nextLevel.name == "mainmenu" || nextLevel.name == "victory") {
         cameraPos = new Vector3(0f, 5f, -8f);
         cam_angle = Quaternion.Euler(15f, 0f, 0f);
       } else if(nextLevel.name == "victory") {

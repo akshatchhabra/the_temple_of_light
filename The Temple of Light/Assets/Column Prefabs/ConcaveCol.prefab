@@ -112,6 +112,7 @@ MonoBehaviour:
   levelID: 
   lit_light: {fileID: 7038383370086252579}
   end_door: {fileID: 0}
+  tint_mat: {fileID: 0}
   is_lit: 0
 --- !u!65 &139744928269154545
 BoxCollider:
@@ -231,6 +232,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sig Sag 1x2
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010318600360, guid: b79a920f3b62a44449cba5071273ef5b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010329359914, guid: b79a920f3b62a44449cba5071273ef5b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -304,6 +309,10 @@ PrefabInstance:
     - target: {fileID: 1000010318600360, guid: b79a920f3b62a44449cba5071273ef5b, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010318600360, guid: b79a920f3b62a44449cba5071273ef5b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010329359914, guid: b79a920f3b62a44449cba5071273ef5b, type: 3}
       propertyPath: m_RootOrder
@@ -474,6 +483,10 @@ PrefabInstance:
     - target: {fileID: 1000012603417228, guid: 8060bbda1d367714186d3109bba4f111, type: 3}
       propertyPath: m_Name
       value: Sig Sag 1x4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012603417228, guid: 8060bbda1d367714186d3109bba4f111, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4000010856857216, guid: 8060bbda1d367714186d3109bba4f111, type: 3}
       propertyPath: m_RootOrder
