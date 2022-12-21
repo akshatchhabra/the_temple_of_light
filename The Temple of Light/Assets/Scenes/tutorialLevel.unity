@@ -624,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   main_camera: {fileID: 417232622}
-  move_sound: {fileID: 8300000, guid: e4940ba219a14c2298b8d462d1bedb80, type: 3}
+  move_sound: {fileID: 8300000, guid: dcee38c623502c38ba5302a2f313711a, type: 3}
   hurt_sound: {fileID: 8300000, guid: 6565192d3a239e14898dd4a67a28bc27, type: 3}
   aggro_sound: {fileID: 8300000, guid: 4923eb28d9fc76bb791eb3225767d5b2, type: 3}
   door_sound: {fileID: 8300000, guid: dcee38c623502c38ba5302a2f313711a, type: 3}
@@ -802,7 +802,8 @@ MonoBehaviour:
   current_level: {fileID: 3179153818237417766}
   main_camera: {fileID: 417232622}
   player: {fileID: 575897638}
-  instructions_text: {fileID: 0}
+  linked_text: {fileID: 910431943}
+  instructions_text: 
 --- !u!4 &188818751
 Transform:
   m_ObjectHideFlags: 0
@@ -2794,7 +2795,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: level01
+          m_StringArgument: tut01
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &654132636
@@ -4530,7 +4531,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086856940}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
