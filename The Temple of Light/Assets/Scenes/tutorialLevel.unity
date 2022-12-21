@@ -6698,6 +6698,62 @@ PrefabInstance:
       propertyPath: health_bar
       value: 
       objectReference: {fileID: 1773584156}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.ctime0
+      value: 13107
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.ctime1
+      value: 39321
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key0.r
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key1.g
+      value: 0.94274926
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key2.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key2.g
+      value: 0.7830189
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.key2.r
+      value: 0.16804805
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470624206303893866, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
+      propertyPath: gradient.m_NumColorKeys
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1777194782924850431, guid: b3d5b871f291e11f6bef2f5bc0983418, type: 3}
       propertyPath: m_Name
       value: Player
