@@ -43,8 +43,8 @@ public class level : MonoBehaviour
       if(exit.GetComponent<EndDoor>().player_collision) {
         Debug.Log("Player completed level");
         exit.GetComponent<EndDoor>().player_collision = false;
-        ls.moveToNextLevel();
-        //ls.resetToMainMenu();
+        //ls.moveToNextLevel();
+        ls.resetToSameLevel();
       }
     }
 

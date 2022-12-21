@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,7 @@ public class LevelSwitcher : MonoBehaviour
     // Private fields
     private Vector3 player_start_pos = new Vector3(-5f, 0f, -5f);
     private bool level_timeout = false;
+    private string path = "save.txt";
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +31,9 @@ public class LevelSwitcher : MonoBehaviour
         {
           levels.Add(name, GameObject.Find(name).GetComponent<level>());
         }
-
+        current_level_id = fileRead();
         if(current_level_id == null) {
-          current_level_id = "mainmenu";
-        } else {
-          //current_level_id = current_level.name;
+          current_level_id = "tut01";
         }
         goToLevel(current_level_id);
     }
@@ -80,6 +80,7 @@ public class LevelSwitcher : MonoBehaviour
 
     public void resetToMainMenu()
     {
+      fileWrite("mainmenu");
       Scene current_scene = SceneManager.GetActiveScene();
       SceneManager.LoadScene(current_scene.name);
 
@@ -87,6 +88,7 @@ public class LevelSwitcher : MonoBehaviour
 
     public void resetToSameLevel()
     {
+      fileWrite(current_level_id);
       Scene current_scene = SceneManager.GetActiveScene();
       SceneManager.LoadScene(current_scene.name);
     }
@@ -97,4 +99,26 @@ public class LevelSwitcher : MonoBehaviour
       yield return new WaitForSeconds(2);
       level_timeout = false;
     }
+
+    private void fileWrite(string input) { // have I been using the same filewrite function
+                                // since I wrote it for, like, assignment 3? yes.
+        using(StreamWriter writer = File.CreateText(path)) {
+          writer.WriteLine(input);
+          writer.Close();
+      }
+    }
+
+    private string fileRead()
+    {
+      string out_line = null;
+      if(File.Exists(path)) {
+        using(StreamReader reader = new StreamReader(path)) {
+          out_line = reader.ReadLine();
+          reader.Close();
+        }
+        File.Delete(path);
+      }
+      return out_line;
+    }
+
 }
