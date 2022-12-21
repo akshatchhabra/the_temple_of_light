@@ -14,6 +14,8 @@ public class Bat : MonoBehaviour
     public Transform player_position;
     public float detection_radius;
     public float reset_radius;
+    public bool is_dead;
+    public float time_of_death;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class Bat : MonoBehaviour
         bat_original_position = transform.position;
         detection_radius = 10.0f;
         reset_radius = 0.5f;
+        is_dead = false;
+        time_of_death = Time.time;
     }
 
     // Update is called once per frame
@@ -34,7 +38,9 @@ public class Bat : MonoBehaviour
         }
         else{
             bat.SetDestination(bat_original_position);
-            //reset rotation?
+        }
+        if (is_dead && Time.time - time_of_death > 3.0f){
+            Destroy(gameObject);
         }
     }
 
@@ -43,6 +49,8 @@ public class Bat : MonoBehaviour
     void OnTriggerEnter(Collider collider){
         if (collider.name == "Player"){
             animation_controller.SetBool("is_attacking", true);
+            Player player = collider.GetComponent<Player>();
+            player.is_hit = true;
         }
         // if (collider.name == "light(Clone)"){
         //     Debug.Log("Here");
@@ -55,6 +63,8 @@ public class Bat : MonoBehaviour
     void OnTriggerExit(Collider collider){
         if (collider.name == "Player"){
             animation_controller.SetBool("is_attacking", false);
+            Player player = collider.GetComponent<Player>();
+            player.is_hit = false;
         }
     }
 }

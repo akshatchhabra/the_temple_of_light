@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public float velocity;
     public float rotation_speed;
     public float turn_smooth_time;
+    public bool is_hit;
 
     private bool in_placing_mode;         // Toggling the movement lock
     private int[] player_pos;
@@ -36,11 +37,14 @@ public class Player : MonoBehaviour
         turn_smooth_time = 0.1f;
         in_placing_mode = false;
         player_pos = new int[2]{0,0};
+        is_hit = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        animation_controller.SetBool("is_hit", is_hit);
+        animation_controller.SetBool("is_moving_column", !in_placing_mode && carrying && Input.GetKeyDown("e"));
         // Only allow movement if not placing an object
         if(!in_placing_mode) {
           float horizontal_axis = Input.GetAxis("Horizontal");
