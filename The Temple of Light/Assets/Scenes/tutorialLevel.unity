@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311915, g: 0.3807396, b: 0.35872662, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.38073987, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -594,6 +594,59 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3b461baf4f56ba4f8a798c0a6f29980, type: 3}
+--- !u!1 &136781908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 136781910}
+  - component: {fileID: 136781909}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &136781909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136781908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36913cddb7f0665e58200dd2c71e09df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  main_camera: {fileID: 417232622}
+  move_sound: {fileID: 8300000, guid: e4940ba219a14c2298b8d462d1bedb80, type: 3}
+  hurt_sound: {fileID: 8300000, guid: 6565192d3a239e14898dd4a67a28bc27, type: 3}
+  aggro_sound: {fileID: 8300000, guid: 4923eb28d9fc76bb791eb3225767d5b2, type: 3}
+  door_sound: {fileID: 8300000, guid: dcee38c623502c38ba5302a2f313711a, type: 3}
+  bat_death_sound: {fileID: 8300000, guid: 81bc40852acfa9ddf9f86502ebbb870e, type: 3}
+  music: {fileID: 8300000, guid: 610c8d95d0ea8686a9f45e07b72ffec0, type: 3}
+  music_player: {fileID: 0}
+  sound_player: {fileID: 0}
+--- !u!4 &136781910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136781908}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 100.11522, y: 2.130048, z: -3.1069775}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &138723204
 PrefabInstance:
   m_ObjectHideFlags: 0
